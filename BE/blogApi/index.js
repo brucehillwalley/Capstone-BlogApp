@@ -48,7 +48,7 @@ app.use(require('./src/middlewares/findSearchSortPage'))
 app.all('/', (req, res) => {
     res.send({
         error: false,
-        message: 'Welcome to Stock Management API',
+        message: 'Welcome BlogAPI',
         documents: {
             swagger: '/documents/swagger',
             redoc: '/documents/redoc',
