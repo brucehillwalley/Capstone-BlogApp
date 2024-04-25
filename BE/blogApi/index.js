@@ -2,6 +2,8 @@
 /* -------------------------------------------------------
     NODEJS EXPRESS | BLOG API
 ------------------------------------------------------- */
+// import express from 'express'
+//require yerine import kullanmak için package.json'a // "type": "module", // eklenir
 const express = require('express')
 const app = express()
 
@@ -30,16 +32,16 @@ dbConnection()
 app.use(express.json())
 
 // Call static uploadFile:
-app.use('/upload', express.static('./upload'))
+// app.use('/upload', express.static('./upload'))
 
 // Check Authentication:
-app.use(require('./src/middlewares/authentication'))
+// app.use(require('./src/middlewares/authentication'))
 
 // Run Logger:
-app.use(require('./src/middlewares/logger'))
+// app.use(require('./src/middlewares/logger'))
 
 // res.getModelList():
-app.use(require('./src/middlewares/findSearchSortPage'))
+// app.use(require('./src/middlewares/findSearchSortPage'))
 
 /* ------------------------------------------------------- */
 // Routes:
@@ -59,7 +61,7 @@ app.all('/', (req, res) => {
 })
 
 // Routes:
-app.use(require('./src/routes'))
+// app.use(require('./src/routes'))
 
 /* ------------------------------------------------------- */
 
