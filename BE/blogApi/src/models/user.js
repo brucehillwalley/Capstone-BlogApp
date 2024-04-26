@@ -68,10 +68,10 @@ const UserSchema = new mongoose.Schema(
       default: true,
     },
 
-    isAuthor: {
-      type: Boolean,
-      default: false,
-    },
+    // isAuthor: {
+    //   type: Boolean,
+    //   default: false,
+    // },
 
     isAdmin: {
       type: Boolean,

@@ -41,7 +41,7 @@ app.use(express.json())
 // app.use(require('./src/middlewares/logger'))
 
 // res.getModelList():
-// app.use(require('./src/middlewares/findSearchSortPage'))
+app.use(require('./src/middlewares/findSearchSortPage'))
 
 /* ------------------------------------------------------- */
 // Routes:
@@ -61,7 +61,7 @@ app.all('/', (req, res) => {
 })
 
 // Routes:
-// app.use(require('./src/routes'))
+app.use(require('./src/routes'))
 
 /* ------------------------------------------------------- */
 
