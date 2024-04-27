@@ -12,6 +12,8 @@ const router = require('express').Router()
 // router.use('/auth', require('./auth'))
 // user:
 router.use('/users', require('./user'))
+// category:
+router.use('/categories', require('./category'))
 // token:
 // router.use('/tokens', require('./token'))
 
