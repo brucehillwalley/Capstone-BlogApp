@@ -77,6 +77,31 @@ const UserSchema = new mongoose.Schema(
       type: Boolean,
       default: false,
     },
+    //! login olmayan kullanıcılara reader rolu verebilirsin
+    // role: { type: String, required: true, enum: ['admin', 'author', 'reader'] },
+
+    profilePicture: { type: String },
+    bio: { type: String },
+    website: { type: String },
+    social: {
+      facebook: { type: String },
+      twitter: { type: String },
+      instagram: { type: String },
+    },
+    preferences: {
+      language: { type: String, default: "tr" }, // Varsayılan dil
+      timezone: { type: String, default: "UTC+03:00" }, // Varsayılan zaman dilimi
+    },
+    actionsActivity: {
+      Viewed: { type: mongoose.Schema.Types.ObjectId, ref: "View" }, // Görüntülenen gönderi sayısı
+      comments: [{ type: mongoose.Schema.Types.ObjectId, ref: "Comment" }], // Kullanıcı yorumları
+      likes: [{ type: mongoose.Schema.Types.ObjectId, ref: "Like" }], // Kullanıcı beğenileri
+    },
+    actionsActivityPlan: {
+      Viewed: { type: mongoose.Schema.Types.ObjectId, ref: "ViewPlan" }, // Görüntülenen plan sayısı
+      comments: [{ type: mongoose.Schema.Types.ObjectId, ref: "CommentPlan" }], // Kullanıcı yorumları
+      likes: [{ type: mongoose.Schema.Types.ObjectId, ref: "LikePlan" }], // Kullanıcı beğenileri
+    },
     deletedAt: {
       //?SOFT DELETE
       type: Date,
