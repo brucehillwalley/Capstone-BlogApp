@@ -25,15 +25,15 @@ module.exports = {
         })
     },
     read: async (req, res) => {
-        const data = await Category.findOne({ _id: req.params.categoryId })
+        const data = await Category.findOne({ _id: req.params.id })
         res.status(202).send({
             error: false,
             data: data
         })
     },
     update: async (req, res) => {
-        const data = await Category.updateOne({ _id: req.params.categoryId }, req.body)
-        const newdata = await Category.findOne({ _id: req.params.categoryId })
+        const data = await Category.updateOne({ _id: req.params.id }, req.body)
+        const newdata = await Category.findOne({ _id: req.params.id })
         res.status(202).send({
             error: false,
             body: req.body,
@@ -43,7 +43,7 @@ module.exports = {
         })
     },
     delete: async (req, res) => {
-        const data = await Category.deleteOne({ _id: req.params.categoryId })
+        const data = await Category.deleteOne({ _id: req.params.id })
         // console.log(data);
         res.sendStatus((data.deletedCount >= 1) ? 204 : 404)
     }

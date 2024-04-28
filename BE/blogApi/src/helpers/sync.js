@@ -57,6 +57,101 @@ const transferUsersCollection = async () => {
     );
   };
 
+//? CATEGORIES.......................................................
+const Category = require("../models/category");
+
+const categoriesData = [{
+  "name": "Spor",
+  "subcategories": [
+    { "name": " koşu" },
+    { "name": " yürüyüş" },
+    { "name": " bisiklet" },
+    { "name": " yoga" },
+    { "name": " pilates" },
+    { "name": " fitness", "subcategories": [
+        { "name": " vücut geliştirme" },
+        { "name": " zumba" },
+        { "name": " crossfit" }
+      ]
+    },
+    { "name": " takım sporları", "subcategories": [
+        { "name": " futbol" },
+        { "name": " basketbol" },
+        { "name": " voleybol" }
+      ]
+    }
+  ]
+},
+{
+  "name": "Sanat",
+  "subcategories": [
+    { "name": " müze gezisi" },
+    { "name": " konser" },
+    { "name": " tiyatro" },
+    { "name": " sergi" },
+    { "name": " film", "subcategories": [
+        { "name": " komedi" },
+        { "name": " dram" },
+        { "name": " aksiyon" }
+      ]
+    }
+  ]
+},
+{
+  "name": "Kültür",
+  "subcategories": [
+    { "name": " tarihi mekan gezisi" },
+    { "name": " workshop" },
+    { "name": " festival" },
+    { "name": " söyleşi" }
+  ]
+},
+{
+  "name": "Gastronomi",
+  "subcategories": [
+    { "name": " restoran deneme" },
+    { "name": " yemek kursu" },
+    { "name": " sokak lezzetleri keşfi" }
+  ]
+}
+];
+
+
+async function insertCategories() {
+  for (const categoryData of categoriesData) {
+    const parentCategoryId = categoryData.parentCategoryId ? await ActivityCategory.findById(categoryData.parentCategoryId) : null;
+    let subcategories = []; // Alt kategori nesnelerini tutmak için dizi
+
+    let category = new Category({
+      name: categoryData.name,
+      slug: categoryData.name.toLowerCase().replace(/\s+/g, '-'), // Slug'ı adından oluştur
+      // ... diğer kategori özellikleri
+   
+    });
+    await category.save();
+
+    if (categoryData.subcategories) {
+      for (const subcategoryData of categoryData.subcategories) {
+        const subcategory = new Category({
+          name: subcategoryData.name,
+          parentCategoryId: category._id,
+          // ... diğer alt kategori özellikleri
+        });
+        await subcategory.save();
+        
+        // console.log(subcategory._id);
+        subcategories.push(subcategory._id); // Alt kategori _id'sini subcategories dizisine ekle
+        console.log(subcategories);
+      }
+    }
+
+    category.subCategoryIds= subcategories,
+    await category.save();
+    console.log(`- Category ${category.name} created.`);
+  }
+}
+
+
 //? DROP DATABASE....................................................
 async function cleanCollections() {
     try {
@@ -74,6 +169,7 @@ async function cleanCollections() {
     await cleanCollections();
     try {
       await transferUsersCollection();
+      await insertCategories();
     
     } catch (error) {
       console.log("- ERROR: Transfer Failed ", error);
