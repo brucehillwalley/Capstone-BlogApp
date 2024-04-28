@@ -139,7 +139,7 @@ async function insertCategories() {
           // ... diğer alt kategori özellikleri
         });
         await subcategory.save();
-        console.log(`- Subcategory ${subcategory.name} created.`);
+        console.log(`-    Subcategory ${subcategory.name} created.`);
         if(subcategoryData.subcategories){
           let subsubcategories = [];
           for (const subsubcategoryData of subcategoryData.subcategories) {
@@ -151,7 +151,7 @@ async function insertCategories() {
             await subsubcategory.save();
             subsubcategories.push(subsubcategory._id);
 
-            console.log(`- Subsubcategory ${subsubcategory.name} created.`);
+            console.log(`-        Subsubcategory ${subsubcategory.name} created.`);
           }
           subcategory.subCategoryIds = subsubcategories;
           await subcategory.save();
