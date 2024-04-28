@@ -7,8 +7,10 @@ const router = require('express').Router()
 // routes/category:
 
 const category = require('../controllers/category')
+const { isLogin } = require('../middlewares/permissions')
 
 // URL: /categories
+router.use(isLogin)
 
 router.route('/')
     .get(category.list)

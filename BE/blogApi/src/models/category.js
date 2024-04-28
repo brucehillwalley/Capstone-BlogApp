@@ -34,6 +34,7 @@ const blogCategorySchema = new mongoose.Schema({
     required: true,
     trim: true,
     unique: true, // Eşsiz kategori adları sağlar
+    index: true,
   },
   description: {
     type: String,
@@ -44,6 +45,7 @@ const blogCategorySchema = new mongoose.Schema({
     required: true,
     trim: true,
     unique: true,
+    
     default: function() {
       return this.name.toLowerCase().replace(/\s+/g, '-');
     }
