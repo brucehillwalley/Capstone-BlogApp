@@ -119,7 +119,7 @@ const categoriesData = [{
 
 async function insertCategories() {
   for (const categoryData of categoriesData) {
-    const parentCategoryId = categoryData.parentCategoryId ? await ActivityCategory.findById(categoryData.parentCategoryId) : null;
+
     let subcategories = []; // Alt kategori nesnelerini tutmak için dizi
 
     let category = new Category({
