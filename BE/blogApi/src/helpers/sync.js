@@ -5,9 +5,6 @@
 /*
     $ npm i axios 
 */
-const axios = require("axios");
-
-const User = require("../models/user");
 
 /*-------------------------------------------------------*/
 
@@ -34,6 +31,9 @@ class MyLodash {
 
 // console.log(MyLodash.random(0,5));
 /*-------------------------------------------------------*/
+const axios = require("axios");
+const User = require("../models/user");
+
 //? USERS...........................................................
 const transferUsersCollection = async () => {
   const { data } = await axios.get(`https://dummyjson.com/users`);
@@ -44,6 +44,7 @@ const transferUsersCollection = async () => {
     email: "admin@site.com",
     isAdmin: true,
   });
+  console.log("- 1 Admin user created.");
 
   dummyUsers.forEach(async (user) => {
     await User.create({
@@ -76,23 +77,37 @@ async function insertCategories() {
 
     if (categoryData.subcategories) {
       for (const subcategoryData of categoryData.subcategories) {
-        const subcategory = new Category({
-          name: subcategoryData.name,
+        let subcategory;
+        if (!(await Category.findOne({ name: subcategoryData.name }))) {
+          subcategory = new Category({
+            name: subcategoryData.name,
 
-          // ... diğer alt kategori özellikleri
-        });
-
+            // ... diğer alt kategori özellikleri
+          });
+        }else{
+          
+          subcategory = await Category.findOne({ name: subcategoryData.name });
+        }
+        
         subcategory.parentCategoryIds.push(category._id);
         await subcategory.save();
         console.log(`-    Subcategory ${subcategory.name} created.`);
+       
+
         if (subcategoryData.subcategories) {
           let subsubcategories = [];
           for (const subsubcategoryData of subcategoryData.subcategories) {
-            const subsubcategory = new Category({
-              name: subsubcategoryData.name,
+            let subsubcategory;
+            if(!(await Category.findOne({name: subsubcategoryData.name}))){
+              subsubcategory = new Category({
+                name: subsubcategoryData.name,
+  
+                // ... diğer alt kategori özellikleri
+              });
+            }else{
 
-              // ... diğer alt kategori özellikleri
-            });
+              subsubcategory = await Category.findOne({ name: subsubcategoryData.name });
+            }
 
             subsubcategory.parentCategoryIds.push(subcategory._id);
             await subsubcategory.save();
