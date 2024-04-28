@@ -141,7 +141,7 @@ async function insertCategories() {
         await subcategory.save();
         console.log(`- Subcategory ${subcategory.name} created.`);
         if(subcategoryData.subcategories){
-          let categoriDizi = [];
+          let subsubcategories = [];
           for (const subsubcategoryData of subcategoryData.subcategories) {
             const subsubcategory = new Category({
               name: subsubcategoryData.name,
@@ -149,11 +149,11 @@ async function insertCategories() {
               // ... diğer alt kategori özellikleri
             });
             await subsubcategory.save();
-            categoriDizi.push(subsubcategory._id);
+            subsubcategories.push(subsubcategory._id);
 
             console.log(`- Subsubcategory ${subsubcategory.name} created.`);
           }
-          subcategory.subCategoryIds = categoriDizi;
+          subcategory.subCategoryIds = subsubcategories;
           await subcategory.save();
         }
 
