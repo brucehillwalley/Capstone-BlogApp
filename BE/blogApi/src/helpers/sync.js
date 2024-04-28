@@ -129,6 +129,7 @@ async function insertCategories() {
    
     });
     await category.save();
+    console.log(`- Category ${category.name} created.`);
 
     if (categoryData.subcategories) {
       for (const subcategoryData of categoryData.subcategories) {
@@ -138,16 +139,36 @@ async function insertCategories() {
           // ... diğer alt kategori özellikleri
         });
         await subcategory.save();
+        console.log(`- Subcategory ${subcategory.name} created.`);
+        if(subcategoryData.subcategories){
+          let categoriDizi = [];
+          for (const subsubcategoryData of subcategoryData.subcategories) {
+            const subsubcategory = new Category({
+              name: subsubcategoryData.name,
+              parentCategoryId: subcategory._id,
+              // ... diğer alt kategori özellikleri
+            });
+            await subsubcategory.save();
+            categoriDizi.push(subsubcategory._id);
+
+            console.log(`- Subsubcategory ${subsubcategory.name} created.`);
+          }
+          subcategory.subCategoryIds = categoriDizi;
+          await subcategory.save();
+        }
+
         
-        // console.log(subcategory._id);
+        
+
+
         subcategories.push(subcategory._id); // Alt kategori _id'sini subcategories dizisine ekle
-        console.log(subcategories);
+       
       }
     }
 
     category.subCategoryIds= subcategories,
     await category.save();
-    console.log(`- Category ${category.name} created.`);
+    
   }
 }
 
