@@ -1,3 +1,22 @@
+### planlanan:
+    * 
+    * tüm ana kategorileri listelemek için => "parentCategoryIds": []
+    * bazı kategorilerin birden fazla parentı olabilir.Ona göre create yap
+
+### yapılan:
+    * permissions aktif
+    * kategoriler alt ve üst kategorilere sahiptir.
+    * admin kendini silemez
+    * admin hariç herkes kendini silebilir
+    * kullanıcı silinince tokenı da silinir ve login de olamaz((user.isActive && !user.isDeleted))
+    * silinenleri admin görebilir ayrıca listeleyebilir.
+    * Admin olmayan isAdmin durumunu değiştiremez
+    * Bir kullanıcının başka bir kullanıcıyı güncellemesini engelle (admin güncelleyebilir):
+    * bir kullanıcının başka bir kullanıcıyı silmesi engellenir:
+    * user soft delete işlemi
+    * category güncelleme ve silme sadece adminde
+
+
 1)  https://github.com/sahandghavidel/mern-blog
     https://www.youtube.com/watch?v=Kkht2mwSL_I
 
