@@ -34,6 +34,7 @@ module.exports = {
 
             if (user && user.password == passwordEncrypt(password)) {
 
+                // aktif olmayan ve silinen kullanıcılar login olmamalı
                 if (user.isActive && !user.isDeleted) {
 
                     // Use UUID:
