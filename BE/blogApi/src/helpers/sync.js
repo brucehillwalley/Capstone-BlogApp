@@ -60,61 +60,8 @@ const transferUsersCollection = async () => {
 //? CATEGORIES.......................................................
 const Category = require("../models/category");
 
-const categoriesData = [{
-  "name": "Spor",
-  "subcategories": [
-    { "name": " koşu" },
-    { "name": " yürüyüş" },
-    { "name": " bisiklet" },
-    { "name": " yoga" },
-    { "name": " pilates" },
-    { "name": " fitness", "subcategories": [
-        { "name": " vücut geliştirme" },
-        { "name": " zumba" },
-        { "name": " crossfit" }
-      ]
-    },
-    { "name": " takım sporları", "subcategories": [
-        { "name": " futbol" },
-        { "name": " basketbol" },
-        { "name": " voleybol" }
-      ]
-    }
-  ]
-},
-{
-  "name": "Sanat",
-  "subcategories": [
-    { "name": " müze gezisi" },
-    { "name": " konser" },
-    { "name": " tiyatro" },
-    { "name": " sergi" },
-    { "name": " film", "subcategories": [
-        { "name": " komedi" },
-        { "name": " dram" },
-        { "name": " aksiyon" }
-      ]
-    }
-  ]
-},
-{
-  "name": "Kültür",
-  "subcategories": [
-    { "name": " tarihi mekan gezisi" },
-    { "name": " workshop" },
-    { "name": " festival" },
-    { "name": " söyleşi" }
-  ]
-},
-{
-  "name": "Gastronomi",
-  "subcategories": [
-    { "name": " restoran deneme" },
-    { "name": " yemek kursu" },
-    { "name": " sokak lezzetleri keşfi" }
-  ]
-}
-];
+
+const categoriesData = require('./categoryData');
 
 
 async function insertCategories() {
