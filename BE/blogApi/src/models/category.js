@@ -50,10 +50,10 @@ const blogCategorySchema = new mongoose.Schema({
       return this.name.toLowerCase().replace(/\s+/g, '-');
     }
   },
-  parentCategoryId: {
+  parentCategoryIds: [{ // hiyerarşik değil örneğin doğa yürüyüşü hem spor kategorisi hem de doğa kategorisinde bulunabilir 
     type: mongoose.Schema.Types.ObjectId,
     ref: 'BlogCategory', // Üst kategoriler için aynı modeli referans alır
-  },
+  }],
   subCategoryIds: [{
     type: mongoose.Schema.Types.ObjectId,
     ref: 'BlogCategory', // Alt kategoriler için aynı modeli referans alır

@@ -18,16 +18,17 @@ module.exports = {
   },
   create: async (req, res) => {
     let data;
+
     //? parent category control:
-    if (req.body?.parentCategoryId) {
-      const parentCategory = await Category.findOne({
-        _id: req.body.parentCategoryId,
-      });
-      if (!parentCategory) {
-        return res.status(400).send({
-          error: true,
-          message: "Parent category not found",
-        });
+    if (req.body?.parentCategoryIds) {
+      for (const parentCategoryId of req.body.parentCategoryIds) {
+        const parentCategory = Category.findOne({ _id: parentCategoryId });
+        if (!parentCategory) {
+          return res.status(400).send({
+            error: true,
+            message: "Parent category not found",
+          });
+        }
       }
 
       data = await Category.create(req.body);
@@ -47,11 +48,11 @@ module.exports = {
         }
       }
       data = await Category.create(req.body);
-      subCategory.parentCategoryId = data._id;
+      subCategory.parentCategoryIds.push (data._id);
       await subCategory.save();
     }
 
-    if (!req.body?.subCategoryIds && !req.body?.parentCategoryId) {
+    if (!req.body?.subCategoryIds && !req.body?.parentCategoryIds) {
       data = await Category.create(req.body);
     }
 
@@ -69,7 +70,6 @@ module.exports = {
     });
   },
   update: async (req, res) => {
-
     //? permission isAdmin => router da
 
     const data = await Category.updateOne({ _id: req.params.id }, req.body);
