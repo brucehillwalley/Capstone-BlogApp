@@ -4,23 +4,24 @@
 ------------------------------------------------------- */
 const router = require('express').Router()
 /* ------------------------------------------------------- */
-// ROUTER INDEX:
+// routes/token:
 
-// URL: /
+const { isAdmin } = require('../middlewares/permissions')
+const token = require('../controllers/token')
 
-// auth:
-router.use('/auth', require('./auth'))
-// user:
-router.use('/users', require('./user'))
-// category:
-router.use('/categories', require('./category'))
-// token:
-router.use('/tokens', require('./token'))
+// URL: /tokens
 
+router.use(isAdmin)
 
+router.route('/')
+    .get(token.list)
+    .post(token.create)
 
-// document:
-// router.use('/documents', require('./document'))
+router.route('/:id')
+    .get(token.read)
+    .put(token.update)
+    .patch(token.update)
+    .delete(token.delete)
 
 /* ------------------------------------------------------- */
 module.exports = router

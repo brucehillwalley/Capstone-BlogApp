@@ -5,6 +5,7 @@
 // User Controller:
 
 const User = require("../models/user");
+const Token = require("../models/token");
 
 module.exports = {
   list: async (req, res) => {
@@ -25,6 +26,7 @@ module.exports = {
     const customFilter = req.user?.isAdmin ? {} : { isDeleted: false };
 
     const data = await res.getModelList(User, customFilter);
+    // console.log(req.user);
 
     res.status(200).send({
       error: false,
@@ -69,7 +71,13 @@ module.exports = {
             #swagger.summary = "Get Single User"
         */
 
-    const data = await User.findOne({ isDeleted: false }); // isDeleted gerek olmayabilir
+
+    //? admin haricindeki kullanıcılar silinen kullanıcıları göremez.
+  const  customFilters = req.user?.isAdmin ? {} : { isDeleted: false };
+  customFilters._id = req.params.id;
+
+    const data = await User.findOne(customFilters);
+    
 
     res.status(200).send({
       error: false,
@@ -95,18 +103,19 @@ module.exports = {
             }
         */
 
-    // Admin olmayan isStaff veya isAdmin durumunu değiştiremez
+    // Admin olmayan isAuthor veya isAdmin durumunu değiştiremez
     if (!req.user.isAdmin) {
-      delete req.body.isStaff;
+      // delete req.body.isAuthor;
       delete req.body.isAdmin;
       delete req.body.isDeleted;
       delete req.body.DeletedId;
-      delete req.body.DeletedDate;
+      delete req.body.deletedAt;
+      delete req.body.isActive;
     }
 
-    // Başka bir kullanıcıyı güncellemesini engelle:
+    //Bir kullanıcının başka bir kullanıcıyı güncellemesini engelle (admin güncelleyebilir):
     let customFilter = { _id: req.params.id };
-    if (!req.user.isAdmin && !req.user.isStaff) {
+    if (!req.user.isAdmin) {
       customFilter = { _id: req.user._id };
     }
 
@@ -117,7 +126,7 @@ module.exports = {
     res.status(202).send({
       error: false,
       data,
-      new: await User.findOne({ _id: req.params.id }),
+      new: await User.findOne({ ...customFilter }),
     });
   },
 
@@ -133,25 +142,55 @@ module.exports = {
     //     error: !data.deletedCount,
     //     data
     // })
+
     //? kullanıcı zaten silinmiş ise 404 hatası verilir.
     const isAlreadyDeletedUser = (await User.findOne({ _id: req.params.id }))
       .isDeleted;
+      // console.log(isAlreadyDeletedUser);
     if (isAlreadyDeletedUser) {
-      return res.status(404).send({ error: true, message: "User not found" });
+    return  res.status(404).send({ error: true, message: "User not found" });
+    }
+    
+
+    //? bir kullanıcının başka bir kullanıcıyı silmesi engellenir:
+    // if (req.user._id !== req.params.id) {
+    //   return res
+    //     .status(403)
+    //     .send({ error: true, message: "You can't delete other user" });
+    // }
+
+    let customFilter = { _id: req.params.id };
+    if (!req.user.isAdmin) {
+      //? admin değilse kendi id'sini aldık
+      customFilter = { _id: req.user._id };
     }
 
+
+    //? admin kendini silememeli:
+   const doNotDeleteAdminUser = (await User.findOne(customFilter)).isAdmin;
+    if (doNotDeleteAdminUser) {
+
+      return  res.status(403).send({ error: true, message: "You can't delete yourself as admin because system will be broken" });
+    }
+
+
+    //? soft delete işlemi:
     const data = await User.updateOne(
-      { _id: req.params.id },
-      { deletedDate: new Date(), isDeleted: true, deletedId: req.user._id }
+      customFilter,
+      { deletedAt: new Date(), isDeleted: true, deletedId: req.user._id }
     );
+
+    //? kullanıcı silinince erişimini engellemek için:
+    await Token.deleteOne({ userId: customFilter._id });
 
     // console.log(data);
     res.status(204).send({
       error: false,
       data,
     });
-    //? soft delete işlemi yapıldı.
   },
+
+  //? silinmiş kullanıcıları listelemek için kullanılır.
   listDeleted: async (req, res) => {
     /*
               #swagger.tags = ["Users"]
@@ -166,6 +205,10 @@ module.exports = {
                     </ul>
                 `
             */
+
+    //? admin haricindeki kullanıcılar silinen kullanıcıları göremez.
+    //? permission kontrolu: route' da isAdmin
+
     let customFilter = { isDeleted: true };
     const data = await res.getModelList(User, customFilter, [
       { path: "deletedId", select: "username firstName lastName" },

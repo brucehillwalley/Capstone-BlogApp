@@ -4,23 +4,15 @@
 ------------------------------------------------------- */
 const router = require('express').Router()
 /* ------------------------------------------------------- */
-// ROUTER INDEX:
+// routes/auth:
 
-// URL: /
+const auth = require('../controllers/auth')
 
-// auth:
-router.use('/auth', require('./auth'))
-// user:
-router.use('/users', require('./user'))
-// category:
-router.use('/categories', require('./category'))
-// token:
-router.use('/tokens', require('./token'))
+// URL: /auth
 
-
-
-// document:
-// router.use('/documents', require('./document'))
+router.post('/login', auth.login) // SimpleToken & JWT
+router.post('/refresh', auth.refresh) // JWT Refresh
+router.get('/logout', auth.logout) // SimpleToken Logout
 
 /* ------------------------------------------------------- */
 module.exports = router
