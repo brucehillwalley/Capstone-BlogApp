@@ -69,6 +69,9 @@ module.exports = {
     });
   },
   update: async (req, res) => {
+
+    //? permission isAdmin => router da
+
     const data = await Category.updateOne({ _id: req.params.id }, req.body);
     const newdata = await Category.findOne({ _id: req.params.id });
     res.status(202).send({
