@@ -5,19 +5,17 @@
 // Activity Controller:
 
 const Activity = require("../models/activity");
-const mongoose = require("mongoose");
+const Category = require("../models/category");
 
 module.exports = {
   list: async (req, res) => {
-   
-
     const customFilters = {
       isPublished: true,
       isDeleted: false,
     };
 
     if (req.user?.isAdmin) {
-      customFilters={}
+      customFilters = {};
     }
 
     const data = await res.getModelList(Activity, customFilters);
@@ -28,44 +26,24 @@ module.exports = {
     });
   },
   create: async (req, res) => {
-    let data;
+    //? crate kullanıcının kendi id'si ile olması lazım
+    req.body.userId = req.user._id;
 
-    //? parent Activity control:
-    if (req.body?.parentActivityIds) {
-      for (const parentActivityId of req.body.parentActivityIds) {
-        const parentActivity = Activity.findOne({ _id: parentActivityId });
-        if (!parentActivity) {
-          return res.status(400).send({
-            error: true,
-            message: "Parent Activity not found",
-          });
-        }
+    //? categoryId yoksa categoryName ile bilgisini doldur
+    if (!req.body.categoryId && req.body.categoryName) {
+    const isExists = await Category.findOne({
+        name: req.body.categoryName.toLowerCase(),
+      });
+      if (isExists) {
+        req.body.categoryId = (
+          await Category.findOne({
+            name: req.body.categoryName.toLowerCase(),
+          })
+        )._id;
       }
-
-      data = await Activity.create(req.body);
-      parentActivity.subActivityIds.push(data._id);
-      await parentActivity.save();
     }
 
-    //? subActivity control:
-    if (req.body?.subActivityIds) {
-      for (const subActivityId of req.body.subActivityIds) {
-        const subActivity = Activity.findOne({ _id: subActivityId });
-        if (!subActivity) {
-          return res.status(400).send({
-            error: true,
-            message: "Sub Activity not found",
-          });
-        }
-      }
-      data = await Activity.create(req.body);
-      subActivity.parentActivityIds.push(data._id);
-      await subActivity.save();
-    }
-
-    if (!req.body?.subActivityIds && !req.body?.parentActivityIds) {
-      data = await Activity.create(req.body);
-    }
+    const data = await Activity.create(req.body);
 
     res.status(201).send({
       error: false,
