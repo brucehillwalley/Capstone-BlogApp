@@ -14,6 +14,8 @@ router.use('/auth', require('./auth'))
 router.use('/users', require('./user'))
 // category:
 router.use('/categories', require('./category'))
+// activity:
+router.use('/activities', require('./activity'))
 // token:
 router.use('/tokens', require('./token'))
 
