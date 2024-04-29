@@ -18,6 +18,9 @@ const ActivitySchema = new mongoose.Schema(
       ref: "Category",
       required: true,
     },
+    categoryName: {
+      type: String,
+    },
     title: {
       type: String,
       trim: true,

@@ -61,7 +61,7 @@ const transferUsersCollection = async () => {
 //? CATEGORIES.......................................................
 const Category = require("../models/category");
 
-const categoriesData = require("./categoryData");
+const categoriesData = require("./data/categoryData");
 
 async function insertCategories() {
   for (const categoryData of categoriesData) {
@@ -84,29 +84,28 @@ async function insertCategories() {
 
             // ... diğer alt kategori özellikleri
           });
-        }else{
-          
+        } else {
           subcategory = await Category.findOne({ name: subcategoryData.name });
         }
-        
+
         subcategory.parentCategoryIds.push(category._id);
         await subcategory.save();
         console.log(`-    Subcategory ${subcategory.name} created.`);
-       
 
         if (subcategoryData.subcategories) {
           let subsubcategories = [];
           for (const subsubcategoryData of subcategoryData.subcategories) {
             let subsubcategory;
-            if(!(await Category.findOne({name: subsubcategoryData.name}))){
+            if (!(await Category.findOne({ name: subsubcategoryData.name }))) {
               subsubcategory = new Category({
                 name: subsubcategoryData.name,
-  
+
                 // ... diğer alt kategori özellikleri
               });
-            }else{
-
-              subsubcategory = await Category.findOne({ name: subsubcategoryData.name });
+            } else {
+              subsubcategory = await Category.findOne({
+                name: subsubcategoryData.name,
+              });
             }
 
             subsubcategory.parentCategoryIds.push(subcategory._id);
@@ -128,6 +127,26 @@ async function insertCategories() {
     (category.subCategoryIds = subcategories), await category.save();
   }
 }
+//? ACTIVITIES.......................................................
+async function insertActivities() {
+  const Activity = require("../models/activity");
+  const activityData = require("./data/activityData");
+
+  const randomUsers = await User.find();
+
+  activityData.forEach(async (activity) => {
+    activity.userId = MyLodash.sample(randomUsers)._id;
+
+    activity.categoryId = (
+      await Category.findOne({
+        name: activity.categoryName.toLowerCase(),
+      })
+    )._id;
+
+    await Activity.create(activity);
+    console.log(`- Activity ${activity.title} created.`);
+  });
+}
 
 //? DROP DATABASE....................................................
 async function cleanCollections() {
@@ -146,6 +165,7 @@ module.exports = async () => {
   try {
     await transferUsersCollection();
     await insertCategories();
+    await insertActivities();
   } catch (error) {
     console.log("- ERROR: Transfer Failed ", error);
   }

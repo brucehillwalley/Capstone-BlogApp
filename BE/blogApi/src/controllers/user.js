@@ -28,6 +28,11 @@ module.exports = {
     const data = await res.getModelList(User, customFilter);
     // console.log(req.user);
 
+     //? For activity raw data
+    //  data.map((user) => {
+    //   console.log(user.username, user._id);
+    // })
+
     res.status(200).send({
       error: false,
       details: await res.getModelListDetails(User, customFilter),
@@ -102,6 +107,8 @@ module.exports = {
                 }
             }
         */
+
+   
 
     // Admin olmayan isAuthor veya isAdmin durumunu değiştiremez
     if (!req.user.isAdmin) {

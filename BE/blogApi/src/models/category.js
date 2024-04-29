@@ -35,6 +35,7 @@ const blogCategorySchema = new mongoose.Schema({
     trim: true,
     unique: true, // Eşsiz kategori adları sağlar
     index: true,
+    lowercase: true,
   },
   description: {
     type: String,

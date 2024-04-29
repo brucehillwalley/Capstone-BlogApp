@@ -10,6 +10,13 @@ module.exports = {
   list: async (req, res) => {
     // const data = await Category.find()
     const data = await res.getModelList(Category);
+
+    //? For activity raw data:
+    // data.map((category) => {
+    //   console.log(category.name, category._id);
+    // })
+    
+
     res.status(200).send({
       error: false,
       details: await res.getModelListDetails(Category),
