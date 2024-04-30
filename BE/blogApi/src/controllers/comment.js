@@ -2,26 +2,26 @@
 /* -------------------------------------------------------
     NODEJS EXPRESS | BLOG API
 ------------------------------------------------------- */
-// Activity Controller:
+// Comment Controller:
 
+const Comment = require("../models/comment");
 const Activity = require("../models/activity");
-const Category = require("../models/category");
 
 module.exports = {
   list: async (req, res) => {
     let customFilters = {
-      isPublished: true,
       isDeleted: false,
     };
 
+    //? admin haricindeki kullanıcılar silinen Comment' ları göremez.
     if (req.user?.isAdmin) {
       customFilters = {};
     }
 
-    const data = await res.getModelList(Activity, customFilters);
+    const data = await res.getModelList(Comment, customFilters);
     res.status(200).send({
       error: false,
-      details: await res.getModelListDetails(Activity, customFilters),
+      details: await res.getModelListDetails(Comment, customFilters),
       data: data,
     });
   },
@@ -29,21 +29,7 @@ module.exports = {
     //? crate kullanıcının kendi id'si ile olması lazım
     req.body.userId = req.user._id;
 
-    //? categoryId yoksa categoryName ile bilgisini doldur
-    if (!req.body.categoryId && req.body.categoryName) {
-      const isExists = await Category.findOne({
-        name: req.body.categoryName.toLowerCase(),
-      });
-      if (isExists) {
-        req.body.categoryId = (
-          await Category.findOne({
-            name: req.body.categoryName.toLowerCase(),
-          })
-        )._id;
-      }
-    }
-
-    const data = await Activity.create(req.body);
+    const data = await Comment.create(req.body);
 
     res.status(201).send({
       error: false,
@@ -52,23 +38,16 @@ module.exports = {
     });
   },
   read: async (req, res) => {
-   let customFilters = {
-      isPublished: true,
+
+    let customFilters = {
       isDeleted: false,
     };
 
-    //? kullanıcı kendine ait yayınlanmayan Activity' ı görebilir
-    const userId = (await Activity.findOne({ _id: req.params.id })).userId;
-    if (userId.equals(req.user._id)) {
-      customFilters = { isDeleted: false };
-    }
-
-    //? admin haricindeki kullanıcılar silinen ve yayınlanmayan Activity' yi göremez.
+    //? admin haricindeki kullanıcılar silinen Comment' ı göremez.
     if (req.user?.isAdmin) {
       customFilters = {};
     }
-
-    const data = await Activity.findOne({
+    const data = await Comment.findOne({
       _id: req.params.id,
       ...customFilters,
     });
@@ -78,12 +57,10 @@ module.exports = {
     });
   },
   update: async (req, res) => {
-    //? admin harici herkes kendi activity' sini güncelleyebilir
+    //? admin harici herkes kendi Comment' ini güncelleyebilir
     if (!req.user.isAdmin) {
-      const userId = (await Activity.findOne({ _id: req.params.id })).userId;
-      // console.log(userId);
-      // console.log(req.user._id);
-
+      const userId = (await Comment.findOne({ _id: req.params.id })).userId;
+    
       //? toString methodu ile karşılaştırma yapılabiliyor aksi halde objeler karşılaştırılmaz
       // if (userId.toString() !== req.user._id.toString()) {return res.status(403).send({ error: true, message: "Unauthorized" });}
 
@@ -93,8 +70,21 @@ module.exports = {
       }
     }
 
-    const data = await Activity.updateOne({ _id: req.params.id }, req.body);
-    const newdata = await Activity.findOne({ _id: req.params.id });
+    //? ilk önce var olan comment'i allEdits'e all:
+    const oldData = await Comment.findOne({ _id: req.params.id });
+
+    //? yorumdaki kod başarısız
+    // oldData.allEdits.push(oldData.comment)
+
+    //? başarılı
+    let allEdits = oldData.allEdits;
+    allEdits.push(oldData.comment);
+    oldData.allEdits = allEdits;
+    await oldData.save();
+
+    const data = await Comment.updateOne({ _id: req.params.id }, req.body);
+    
+    const newdata = await Comment.findOne({ _id: req.params.id });
     res.status(202).send({
       error: false,
       body: req.body,
@@ -104,27 +94,27 @@ module.exports = {
     });
   },
   delete: async (req, res) => {
-    //? activity zaten silinmiş ise 404 hatası verilir.
-    const isAlreadyDeletedActivity = (
-      await Activity.findOne({ _id: req.params.id })
+    //? Comment zaten silinmiş ise 404 hatası verilir.
+    const isAlreadyDeletedComment = (
+      await Comment.findOne({ _id: req.params.id })
     ).isDeleted;
-    // console.log(isAlreadyDeletedActivity);
-    if (isAlreadyDeletedActivity) {
+    // console.log(isAlreadyDeletedComment);
+    if (isAlreadyDeletedComment) {
       return res
         .status(404)
-        .send({ error: true, message: "Activity not found" });
+        .send({ error: true, message: "Comment not found" });
     }
 
-    //? admin harici herkes kendi activity' sini silebilir
+    //? admin harici herkes kendi Comment' sini silebilir
     if (!req.user.isAdmin) {
-      const userId = (await Activity.findOne({ _id: req.params.id })).userId;
+      const userId = (await Comment.findOne({ _id: req.params.id })).userId;
 
       if (!userId.equals(req.user._id)) {
         return res.status(403).send({ error: true, message: "Unauthorized" });
       }
     }
 
-    const data = await Activity.updateOne(
+    const data = await Comment.updateOne(
       { _id: req.params.id },
       {
         isDeleted: true,
@@ -138,11 +128,11 @@ module.exports = {
     res.sendStatus(204);
   },
 
-  //? silinmiş activity' lari listelemek için kullanılır.
+  //? silinmiş Comment' lari listelemek için kullanılır.
   listDeleted: async (req, res) => {
     /*
-    #swagger.tags = ["Activity"]
-    #swagger.summary = "Get Deleted Activity"
+    #swagger.tags = ["Comment"]
+    #swagger.summary = "Get Deleted Comment"
     #swagger.description = `
      You can send query with endpoint for filter[], search[], sort[], page and limit.
                     <ul> Examples:
@@ -154,16 +144,16 @@ module.exports = {
     
     `
    */
-    //? admin haricindeki kullanıcılar silinen activity' ları göremez.
+    //? admin haricindeki kullanıcılar silinen Comment' ları göremez.
     //? permission kontrolu: route' da isAdmin
 
     let customFilter = { isDeleted: true };
-    const data = await res.getModelList(Activity, customFilter, [
+    const data = await res.getModelList(Comment, customFilter, [
       { path: "deletedId", select: "username firstName lastName" },
     ]);
     res.status(200).send({
       error: false,
-      details: await res.getModelListDetails(Activity, customFilter),
+      details: await res.getModelListDetails(Comment, customFilter),
       data,
     });
   },

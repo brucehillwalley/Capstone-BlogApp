@@ -68,8 +68,8 @@ module.exports = {
     });
   },
   delete: async (req, res) => {
-    //? Admin olmayan herkes kendi like' nı silebilir
     
+    //? Admin olmayan herkes kendi like' nı silebilir
     if(!req.user.isAdmin) {
       const userId= (await Like.findOne({ _id: req.params.id })).userId;
       if (!userId.equals(req.user._id)) {

@@ -16,6 +16,8 @@ router.use('/users', require('./user'))
 router.use('/categories', require('./category'))
 // activity:
 router.use('/activities', require('./activity'))
+// comment:
+router.use('/comments', require('./comment'))
 // like:
 router.use('/likes', require('./like'))
 // token:

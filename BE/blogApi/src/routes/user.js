@@ -11,16 +11,18 @@ const { isAdmin, isLogin } = require("../middlewares/permissions");
 
 // URL: /users
 
-router.route("/").get(isLogin, user.list).post(user.create);
+router.use(isLogin);
+
+router.route("/").get(user.list).post(user.create);
 
 router.get('/listdeleted', isAdmin, user.listDeleted)
 
 router
   .route("/:id")
-  .get(isLogin, user.read)
-  .put(isLogin, user.update)
-  .patch(isLogin, user.update)
-  .delete(isLogin, user.delete);
+  .get(user.read)
+  .put(user.update)
+  .patch(user.update)
+  .delete(user.delete);
 
 /* ------------------------------------------------------- */
 module.exports = router;
