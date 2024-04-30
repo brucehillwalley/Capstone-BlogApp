@@ -72,7 +72,7 @@ module.exports = {
     
     if(!req.user.isAdmin) {
       const userId= (await Like.findOne({ _id: req.params.id })).userId;
-      if (userId !== req.user._id) {
+      if (userId.equals(req.user._id)) {
         return res.status(403).send({ error: true, message: "Unauthorized" });
       }
      }

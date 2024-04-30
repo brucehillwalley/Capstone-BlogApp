@@ -15,7 +15,7 @@ router.use(isLogin)
 router.route('/')
     .get(category.list)
     .post(category.create)
-
+    
 router.route('/:id')
     .get(category.read)
     .put(isAdmin, category.update)

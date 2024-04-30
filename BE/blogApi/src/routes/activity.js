@@ -17,6 +17,8 @@ router.route('/')
     .get(activity.list)
     .post(isLogin, activity.create)
 
+router.get('/listdeleted',isAdmin,activity.listDeleted)
+
 router.route('/:id')
     .get(activity.read)
     .put(isLogin, activity.update)

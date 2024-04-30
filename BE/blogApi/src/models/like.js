@@ -22,6 +22,7 @@ const userLikes = await Like.find({ userId: userId });
 
 /* ------------------------------------------------------- */
 // like Model:
+
 const LikeSchema = new mongoose.Schema({
     userId: {
         type: mongoose.Schema.Types.ObjectId,
@@ -50,7 +51,7 @@ const LikeSchema = new mongoose.Schema({
 }
 )
 // Index for efficient retrieval of likes based on userId and itemId
-likeSchema.index({ userId: 1, itemId: 1 }, { unique: true });
+LikeSchema.index({ userId: 1, itemId: 1 }, { unique: true });
 
 /* ------------------------------------------------------- */
 module.exports = mongoose.model('Like', LikeSchema)

@@ -143,13 +143,6 @@ module.exports = {
             #swagger.summary = "Delete User"
         */
 
-    // const data = await User.deleteOne({ _id: req.params.id })
-
-    // res.status(data.deletedCount ? 204 : 404).send({
-    //     error: !data.deletedCount,
-    //     data
-    // })
-
     //? kullanıcı zaten silinmiş ise 404 hatası verilir.
     const isAlreadyDeletedUser = (await User.findOne({ _id: req.params.id }))
       .isDeleted;
@@ -158,14 +151,6 @@ module.exports = {
     return  res.status(404).send({ error: true, message: "User not found" });
     }
     
-
-    //? bir kullanıcının başka bir kullanıcıyı silmesi engellenir:
-    // if (req.user._id !== req.params.id) {
-    //   return res
-    //     .status(403)
-    //     .send({ error: true, message: "You can't delete other user" });
-    // }
-
     let customFilter = { _id: req.params.id };
     if (!req.user.isAdmin) {
       //? admin değilse kendi id'sini aldık
@@ -176,7 +161,6 @@ module.exports = {
     //? admin kendini silememeli:
    const doNotDeleteAdminUser = (await User.findOne(customFilter)).isAdmin;
     if (doNotDeleteAdminUser) {
-
       return  res.status(403).send({ error: true, message: "You can't delete yourself as admin because system will be broken" });
     }
 
@@ -184,17 +168,15 @@ module.exports = {
     //? soft delete işlemi:
     const data = await User.updateOne(
       customFilter,
-      { deletedAt: new Date(), isDeleted: true, deletedId: req.user._id }
+      { deletedAt: new Date(), isDeleted: true, deletedId: req.user._id, isActive: false },
     );
 
     //? kullanıcı silinince erişimini engellemek için:
     await Token.deleteOne({ userId: customFilter._id });
 
-    // console.log(data);
-    res.status(204).send({
-      error: false,
-      data,
-    });
+  
+    //?zaten silinmiş ise 404 hatası yukarıda verdik
+    res.sendStatus(204);
   },
 
   //? silinmiş kullanıcıları listelemek için kullanılır.
