@@ -60,7 +60,7 @@ module.exports = {
     });
   },
   create: async (req, res) => {
-    //? crate kullanıcının kendi id'si ile olması lazım
+    //? create kullanıcının kendi id'si ile olması lazım
     req.body.userId = req.user._id;
 
     //? categoryId yoksa categoryName ile bilgisini doldur
@@ -112,8 +112,14 @@ module.exports = {
     });
   },
   update: async (req, res) => {
+    
     //? admin harici herkes kendi activity' sini güncelleyebilir
     if (!req.user.isAdmin) {
+
+      delete req.body.isDeleted;
+      delete req.body.DeletedId;
+      delete req.body.deletedAt;
+
       const userId = (await Activity.findOne({ _id: req.params.id })).userId;
       // console.log(userId);
       // console.log(req.user._id);
@@ -149,7 +155,7 @@ module.exports = {
         .send({ error: true, message: "Activity not found" });
     }
 
-    //? admin harici herkes kendi activity' sini silebilir
+    //? admin harici herkes sadece kendi activity' sini silebilir
     if (!req.user.isAdmin) {
       const userId = (await Activity.findOne({ _id: req.params.id })).userId;
 
