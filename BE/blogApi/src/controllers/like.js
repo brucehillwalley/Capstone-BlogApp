@@ -23,7 +23,7 @@ module.exports = {
     //  req.body.itemId =  // TODO: itemId alanını doldur
 
     //? zaten kullanıcı beğendiyse 409 hatası verilir
-    const existingLike = await Like.findOne({ userId, itemId });
+    const existingLike = await Like.findOne({userId: req.body.userId, itemId: req.body.itemId});
     if (existingLike) {
       return res.status(409).send({ 
         error: true, 
@@ -47,7 +47,7 @@ module.exports = {
   },
   update: async (req, res) => {
     
-    //? Admin olmayan herkes kendi like' nı güncelleyebilir.
+    //? Admin olmayan herkes sadece kendi like' nı güncelleyebilir.
     if(!req.user.isAdmin) {
      const userId= (await Like.findOne({ _id: req.params.id })).userId;
 
@@ -72,11 +72,11 @@ module.exports = {
     
     if(!req.user.isAdmin) {
       const userId= (await Like.findOne({ _id: req.params.id })).userId;
-      if (userId.equals(req.user._id)) {
+      if (!userId.equals(req.user._id)) {
         return res.status(403).send({ error: true, message: "Unauthorized" });
       }
      }
-    const data = await findByIdAndDelete(req.params.id );
+    const data = await Like.deleteOne({_id:req.params.id} );
     // console.log(data);
     res.sendStatus(data.deletedCount >= 1 ? 204 : 404);
   },

@@ -33,6 +33,11 @@ class MyLodash {
 /*-------------------------------------------------------*/
 const axios = require("axios");
 const User = require("../models/user");
+const Activity = require("../models/activity");
+const activityData = require("./data/activityData");
+const Category = require("../models/category");
+const categoriesData = require("./data/categoryData");
+const Like = require("../models/like");
 
 //? USERS...........................................................
 const transferUsersCollection = async () => {
@@ -59,9 +64,6 @@ const transferUsersCollection = async () => {
 };
 
 //? CATEGORIES.......................................................
-const Category = require("../models/category");
-
-const categoriesData = require("./data/categoryData");
 
 async function insertCategories() {
   for (const categoryData of categoriesData) {
@@ -129,9 +131,7 @@ async function insertCategories() {
 }
 //? ACTIVITIES.......................................................
 async function insertActivities() {
-  const Activity = require("../models/activity");
-  const activityData = require("./data/activityData");
-
+ 
   const randomUsers = await User.find();
 
   activityData.forEach(async (activity) => {
@@ -147,7 +147,20 @@ async function insertActivities() {
     console.log(`- Activity ${activity.title} created.`);
   });
 }
+//? LIKES.......................................................
+async function insertLikes() {
+  const randomUsers = await User.find();
+  const randomActivities = await Activity.find();
 
+  for (let i = 0; i < randomUsers.length; i++) {
+    const userId = randomUsers[i]._id;
+    const activityId = randomActivities[i]._id;
+    const like = new Like({ userId, activityId });
+    await like.save();
+    console.log(`- Like created for user ${userId} and activity ${activityId}.`);
+  }
+  
+}
 //? DROP DATABASE....................................................
 async function cleanCollections() {
   try {

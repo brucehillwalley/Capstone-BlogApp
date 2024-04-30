@@ -18,9 +18,9 @@ router.route('/')
 
 router.route('/:id')
     .get(like.read)
-    .put(isAdmin, like.update)
-    .patch(isAdmin,like.update)
-    .delete(isAdmin,like.delete)
+    .put(like.update)
+    .patch(like.update)
+    .delete(like.delete)
 
 /* ------------------------------------------------------- */
 module.exports = router
