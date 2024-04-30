@@ -65,11 +65,7 @@ module.exports = {
       delete req.body.deletedAt;
       delete req.body.allEdits;
       const userId = (await Comment.findOne({ _id: req.params.id })).userId;
-    
-      //? toString methodu ile karşılaştırma yapılabiliyor aksi halde objeler karşılaştırılmaz
-      // if (userId.toString() !== req.user._id.toString()) {return res.status(403).send({ error: true, message: "Unauthorized" });}
-
-      //? veya
+           
       if (!userId.equals(req.user._id)) {
         return res.status(403).send({ error: true, message: "Unauthorized" });
       }
