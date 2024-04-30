@@ -59,6 +59,11 @@ module.exports = {
   update: async (req, res) => {
     //? admin harici herkes kendi Comment' ini güncelleyebilir
     if (!req.user.isAdmin) {
+      //? admin harici gücellenemeyecek veriler:   
+      delete req.body.isDeleted;
+      delete req.body.deletedId;
+      delete req.body.deletedAt;
+      delete req.body.allEdits;
       const userId = (await Comment.findOne({ _id: req.params.id })).userId;
     
       //? toString methodu ile karşılaştırma yapılabiliyor aksi halde objeler karşılaştırılmaz
