@@ -59,7 +59,19 @@ module.exports = {
     });
   },
   update: async (req, res) => {
-    //? permission isAdmin => router da
+   
+    //? admin harici herkes kendi activity' sini güncelleyebilir
+    if(!req.user.isAdmin) {
+      const userId = (await Activity.findOne({ _id: req.params.id })).userId;
+      // console.log(userId);
+      // console.log(req.user._id);
+      //? toString methodu ile karşılaştırma yapılabiliyor aksi halde objeler karşılaştırılmaz
+      // if (userId.toString() !== req.user._id.toString()) {return res.status(403).send({ error: true, message: "Unauthorized" });}
+      //? veya
+      if (!userId.equals(req.user._id)){
+        return res.status(403).send({ error: true, message: "Unauthorized" });
+      }
+     }
 
     const data = await Activity.updateOne({ _id: req.params.id }, req.body);
     const newdata = await Activity.findOne({ _id: req.params.id });
