@@ -25,7 +25,7 @@ const CommentSchema = new mongoose.Schema(
     },
     allEdits: {
       type: [String],
-      default: null,
+      default: [],
     },
     likeCount: {
        type: Number,
