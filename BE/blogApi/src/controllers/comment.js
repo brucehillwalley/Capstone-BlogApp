@@ -38,7 +38,6 @@ module.exports = {
     });
   },
   read: async (req, res) => {
-
     let customFilters = {
       isDeleted: false,
     };
@@ -59,32 +58,35 @@ module.exports = {
   update: async (req, res) => {
     //? admin harici herkes kendi Comment' ini güncelleyebilir
     if (!req.user.isAdmin) {
-      //? admin harici gücellenemeyecek veriler:   
+      //? admin harici gücellenemeyecek veriler:
       delete req.body.isDeleted;
       delete req.body.deletedId;
       delete req.body.deletedAt;
       delete req.body.allEdits;
       const userId = (await Comment.findOne({ _id: req.params.id })).userId;
-           
+
       if (!userId.equals(req.user._id)) {
         return res.status(403).send({ error: true, message: "Unauthorized" });
       }
     }
 
-    //? ilk önce var olan comment'i allEdits'e all:
-    const oldData = await Comment.findOne({ _id: req.params.id });
+    if (req.body.comment) {
+      //? ilk önce var olan comment'i allEdits'e all:
+      const oldData = await Comment.findOne({ _id: req.params.id });
 
-    //? yorumdaki kod başarısız
-    // oldData.allEdits.push(oldData.comment)
-
-    //? başarılı
-    let allEdits = oldData.allEdits;
-    allEdits.push(oldData.comment);
-    oldData.allEdits = allEdits;
-    await oldData.save();
+      //? yorumdaki kod başarısız
+      // oldData.allEdits.push(oldData.comment)
+      if (oldData.comment !== req.body.comment) {
+        //? başarılı
+        let allEdits = oldData.allEdits;
+        allEdits.push(oldData.comment);
+        oldData.allEdits = allEdits;
+        await oldData.save();
+      }
+    }
 
     const data = await Comment.updateOne({ _id: req.params.id }, req.body);
-    
+
     const newdata = await Comment.findOne({ _id: req.params.id });
     res.status(202).send({
       error: false,
