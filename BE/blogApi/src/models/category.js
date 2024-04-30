@@ -53,7 +53,9 @@ const blogCategorySchema = new mongoose.Schema({
   },
   parentCategoryIds: [{ // hiyerarşik değil örneğin doğa yürüyüşü hem spor kategorisi hem de doğa kategorisinde bulunabilir 
     type: mongoose.Schema.Types.ObjectId,
-    ref: 'BlogCategory', // Üst kategoriler için aynı modeli referans alır
+    ref: 'BlogCategory',
+    default: null,
+     // Üst kategoriler için aynı modeli referans alır
   }],
   subCategoryIds: [{
     type: mongoose.Schema.Types.ObjectId,

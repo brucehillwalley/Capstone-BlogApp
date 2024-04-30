@@ -8,14 +8,20 @@ const Category = require("../models/category");
 
 module.exports = {
   list: async (req, res) => {
-    // const data = await Category.find()
-    const data = await res.getModelList(Category);
+  
+    //? query her zaman str gelir.
+    let filter={}
+    if(req.query.pg === "null"){
+      filter.parentCategoryIds = []
+    }
+    const data = await res.getModelList(Category, filter);
 
     //? For activity raw data:
     // data.map((category) => {
     //   console.log(category.name, category._id);
     // })
-    
+    console.log(req.query);
+   
 
     res.status(200).send({
       error: false,

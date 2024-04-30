@@ -14,9 +14,27 @@ module.exports = {
       isDeleted: false,
     };
 
-    if (req.user?.isAdmin) {
-      customFilters = {};
+    // console.log(req.user._id);
+    // console.log(req.query.author);
+    // console.log(req.query.author === req.user._id.toString());
+    // console.log(req.query.author == req.user._id);
+    // console.log(req.user._id.equals(req.query.author));
+
+    if (req.query.author && (req.user._id.equals(req.query.author) || req.user.isAdmin)) {
+
+      customFilters.userId = req.query.author;
+      delete customFilters.isPublished
+     !(req.user._id.equals(req.query.author)) && delete customFilters.isDeleted
+      console.log(req.user._id);
+      console.log(req.query.author);
+    }else if(req.query.author && !(req.user._id.equals(req.query.author))){
+      res.errorStatusCode = 403
+      throw new Error("You are not allowed to list other's activities");
     }
+
+    // if (req.user?.isAdmin) {
+    //   customFilters = {};
+    // }
 
     const data = await res.getModelList(Activity, customFilters);
     res.status(200).send({
@@ -52,7 +70,7 @@ module.exports = {
     });
   },
   read: async (req, res) => {
-   let customFilters = {
+    let customFilters = {
       isPublished: true,
       isDeleted: false,
     };
