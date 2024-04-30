@@ -9,6 +9,7 @@ const Category = require("../models/category");
 
 module.exports = {
   list: async (req, res) => {
+
     let customFilters = {
       isPublished: true,
       isDeleted: false,
@@ -19,15 +20,30 @@ module.exports = {
     // console.log(req.query.author === req.user._id.toString());
     // console.log(req.query.author == req.user._id);
     // console.log(req.user._id.equals(req.query.author));
+    // http://127.0.0.1:8000/activities?filter[isPublished]=0 //? admin publish olmayanları listeler diğer kullanıcılar gönderirse normal listeleme yapar
+    // http://127.0.0.1:8000/activities?filter[isDeleted]=1  //?  admin silinenleri listeler diğer kullanıcılar gönderirse normal listeleme yapar
 
-    if (req.query.author && (req.user._id.equals(req.query.author) || req.user.isAdmin)) {
 
-      customFilters.userId = req.query.author;
+    //? kullanıcılar sadece kendi activity' larını listelemek isterse:
+    //? query'den author bilgisini alıyoruz.
+    //? query'den değerler str gelir.
+    if ((req.query?.author && (req.user?._id.equals(req.query?.author)) || req.user?.isAdmin)) {
+      
+
+      customFilters.userId = req.query?.author ;
       delete customFilters.isPublished
-     !(req.user._id.equals(req.query.author)) && delete customFilters.isDeleted
-      console.log(req.user._id);
-      console.log(req.query.author);
-    }else if(req.query.author && !(req.user._id.equals(req.query.author))){
+
+      //? admin  silinenleri görebilir. (kendi veya başkası)
+      req.user?.isAdmin && delete customFilters.isDeleted
+
+      //? admin başkasına ait author verisi gönderebilir bu durumda boş olmaz ve admin o kullanıcıyı listelemiş olur.
+      //? query'den author bilgisi gelmez ise normal listeleme yapılacak demektir.
+      //? customFilters.userId yoksa silme sebebi => { userId: undefined } 
+      customFilters.userId || delete customFilters.userId
+      // console.log(req.user._id);
+      // console.log(req.query.author);
+
+    }else if(req.query?.author && !(req.user?._id.equals(req.query.author))){
       res.errorStatusCode = 403
       throw new Error("You are not allowed to list other's activities");
     }
@@ -35,7 +51,7 @@ module.exports = {
     // if (req.user?.isAdmin) {
     //   customFilters = {};
     // }
-
+  // console.log(customFilters);
     const data = await res.getModelList(Activity, customFilters);
     res.status(200).send({
       error: false,
