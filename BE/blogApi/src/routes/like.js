@@ -17,7 +17,7 @@ router.route('/')
     .post(like.create)
 
 router.route('/:id')
-    .get(isAdmin, like.read)
+    .get(like.read)
     .put(isAdmin, like.update)
     .patch(isAdmin, like.update)
     .delete(like.delete)
