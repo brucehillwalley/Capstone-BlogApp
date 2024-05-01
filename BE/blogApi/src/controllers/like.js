@@ -5,6 +5,8 @@
 // Like Controller:
 
 const Like = require("../models/like");
+const Activity = require("../models/activity");
+const Comment = require("../models/comment");
 
 module.exports = {
   list: async (req, res) => {
@@ -31,6 +33,12 @@ module.exports = {
     }
 
     const data = await Like.create(req.body);
+    //? activity veya comment için likeCount'u arttırın
+    if(req.body.itemType === "activity") {
+      await Activity.updateOne({ _id: req.body.itemId }, { $inc: { likeCount: 1 } });
+    }else if(req.body.itemType === "comment") {
+      await Comment.updateOne({ _id: req.body.itemId }, { $inc: { likeCount: 1 } });
+    }
 
     res.status(201).send({
       error: false,
@@ -76,8 +84,15 @@ module.exports = {
         return res.status(403).send({ error: true, message: "Unauthorized" });
       }
      }
+     const likeData = await Like.findOne({ _id: req.params.id });
     const data = await Like.deleteOne({_id:req.params.id} );
-    // console.log(data);
+      //? activity veya comment için likeCount'u azalt:
+      if(likeData.itemType === "activity") {
+        await Activity.updateOne({ _id: likeData.itemId }, { $inc: { likeCount: -1 } });
+      }else if(likeData.itemType === "comment") {
+        await Comment.updateOne({ _id: likeData.itemId }, { $inc: { likeCount: -1 } });
+      }
+    console.log(data);
     res.sendStatus(data.deletedCount >= 1 ? 204 : 404);
   },
 };
