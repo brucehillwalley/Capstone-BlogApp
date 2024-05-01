@@ -16,11 +16,12 @@ module.exports = {
     }
     const data = await res.getModelList(Category, filter);
 
-    //? For activity raw data:
+    //? For activity raw data: sorgu için yan yana yazdırdım
     // data.map((category) => {
-    //   console.log(category.name, category._id);
+    //   process.stdout.write(category.name + ' ');
     // })
-    console.log(req.query);
+    
+    // console.log(req.query);
    
 
     res.status(200).send({

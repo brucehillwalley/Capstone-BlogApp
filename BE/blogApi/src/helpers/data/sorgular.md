@@ -1,0 +1,13 @@
+senden aşağıdaki formata uygun farklı veriler istiyorum: 
+
+categoryName bunlar olsun :spor koşu maraton yarı maraton parkur koşusu yürüyüş bisiklet dağ bisikleti yol bisikleti bmx yoga hatha yoga ashtanga yoga kundalini yoga pilates fitness vücut geliştirme zumba crossfit hiit spinning takım sporları futbol basketbol voleybol hentbol ragbi su sporları yüzme dalış sörf kano yelken dövüş sporları boks karate judo muay thai kick boks ekstrem sporlar tırmanış paraşüt buz tırmanışı base jumping kayak sanat müze gezisi arkeoloji müzesi sanat müzesi tarihi müze konser klasik müzik rock müzik caz müzik tiyatro komedi dram müzikal sergi resim sergisi fotoğraf sergisi heykel sergisi film aksiyon bilim kurgu animasyon dans bale modern dans halk dansları tango salsa müzik gitar piyano koro klarnet keman edebiyat şiir roman öykü tiyatro oyunu deneme kültür tarihi mekan gezisi müze kale tarihi ev workshop seramik ebru cam i̇şleme festival müzik festivali film fe
+
+stivali yemek festivali söyleşi edebiyat söyleşisi felsefe söyleşisi bilim söyleşisi dil kursları i̇ngilizce almanca i̇spanyolca fransızca rusça e
+
+l sanatları dokuma ahşap oyma arkeoloji kazı alanı ziyareti arkeoloji söyleşisi arkeoloji sergisi gastronomi restoran deneme türk mutfağı i̇talyan
+
+ mutfağı uzak doğu mutfağı meksika mutfağı hint mutfağı yemek kursu fransız mutfağı japon mutfağı vejetaryen mutfak sokak lezzetleri keşfi şarap tadımı kırmızı şarap beyaz şarap köpüklü şarap kahve deneyimi kahve çekirdekleri kahve demleme teknikleri latte art bira tadımı craft bira siyah bira buğday bira çikolata atölyesi doğa kamp trekking fotoğrafçılık manzara fotoğrafçılığı vahşi yaşam fotoğrafçılığı makro fotoğrafçılık kuş gözlemciliği botanik bitki yetiştirme bahçe düzenleme aromatik bitkiler doğa yürüyüşü dağcılık mağaracılık hayvanat bahçesi ziyareti vahşi yaşam gözlemciliği kurt gözlemciliği ayı gözlemciliği balina gözlemciliği avcılık balıkçılık olta balıkçılığı kıyı balıkçılığı derin deniz balıkçılığı rafting 
+
+yamaç paraşütü
+
+{    title: "Street Photography Exhibition in London",  content:   "Explore the raw and authentic world of street photography at this captivating exhibition in London. Featuring the works of renowned street photographers from around the world, this exhibition will transport you to the heart of urban life...",  image: ["https://example.com/street-photography-exhibition.jpg"],  isPublished: true,  hasPrice: false,  location: "London, United Kingdom",  isOutDoor: false,  likeCount: 28,  deletedAt: null,  deletedId: null,  isDeleted: false,  deletedReason: null,  createdAt: new Date("2023-04-20T16:00:00Z"),  updatedAt: new Date("2023-04-20T16:00:00Z"),  categoryName: "fotoğraf sergisi", }

@@ -38,6 +38,8 @@ const activityData = require("./data/activityData");
 const Category = require("../models/category");
 const categoriesData = require("./data/categoryData");
 const Like = require("../models/like");
+const commentData = require("./data/commentData");
+const Comment = require("../models/comment");
 
 //? USERS...........................................................
 const transferUsersCollection = async () => {
@@ -131,7 +133,6 @@ async function insertCategories() {
 }
 //? ACTIVITIES.......................................................
 async function insertActivities() {
- 
   const randomUsers = await User.find();
 
   activityData.forEach(async (activity) => {
@@ -147,19 +148,52 @@ async function insertActivities() {
     console.log(`- Activity ${activity.title} created.`);
   });
 }
-//? LIKES.......................................................
-async function insertLikes() {
-  const randomUsers = await User.find();
-  const randomActivities = await Activity.find();
+//? COMMENTS.........................................................
+async function insertComments() {
+  const commentUsers = await User.find();
+  const commentActivities = await Activity.find();
+  console.log(`- ALL COMMENTS...............`);
+ await ( commentUsers.forEach(async (user) => {
+    let comment = MyLodash.sample(commentData);
+    comment.userId = user._id;
+    comment.activityId = MyLodash.sample(commentActivities)._id;
+    await Comment.create(comment);
+    console.log(`- Comment ${comment.comment} created.`);
+  }))
 
-  for (let i = 0; i < randomUsers.length; i++) {
-    const userId = randomUsers[i]._id;
-    const activityId = randomActivities[i]._id;
-    const like = new Like({ userId, activityId });
-    await like.save();
-    console.log(`- Like created for user ${userId} and activity ${activityId}.`);
-  }
   
+}
+//? LIKES............................................................
+async function insertLikes() {
+  const likeUsers = await User.find();
+  const likeActivities = await Activity.find();
+  const likeComments = await Comment.find();
+
+  console.log(`- ALL LIKES.............`);
+  likeUsers.slice(0, likeUsers.length / 2).forEach(async (user) => {
+    likeActivities.forEach(async (activity) => {
+      await Like.create({
+        userId: user._id,
+        itemId: activity._id,
+        itemType: "activity",
+      });
+      console.log(
+        `- Like created for USER: ${user.username} and ACTIVITY: ${activity.title}.`
+      );
+    });
+
+    likeComments.forEach(async (comment) => {
+      await Like.create({
+        userId: user._id,
+        itemId: comment._id,
+        itemType: "comment",
+      });
+      console.log(
+        `- Like created for USER: ${user.username} and COMMENT: ${comment.comment}.`
+      );
+    });
+  });
+ 
 }
 //? DROP DATABASE....................................................
 async function cleanCollections() {
@@ -179,6 +213,8 @@ module.exports = async () => {
     await transferUsersCollection();
     await insertCategories();
     await insertActivities();
+    await insertComments();
+    await insertLikes();
   } catch (error) {
     console.log("- ERROR: Transfer Failed ", error);
   }
