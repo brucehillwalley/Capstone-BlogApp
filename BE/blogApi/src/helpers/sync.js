@@ -208,6 +208,9 @@ async function cleanCollections() {
 /*-------------------------------------------------------*/
 
 module.exports = async () => {
+  //! Emniyet
+  return null
+
   await cleanCollections();
   try {
     await transferUsersCollection();
