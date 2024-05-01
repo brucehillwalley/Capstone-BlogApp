@@ -6,6 +6,7 @@
 
 const Activity = require("../models/activity");
 const Category = require("../models/category");
+const View = require("../models/view");
 
 module.exports = {
   list: async (req, res) => {
@@ -106,6 +107,20 @@ module.exports = {
       _id: req.params.id,
       ...customFilters,
     });
+
+    //? datayı çekebildiysem view tablosuna eklemeliyim
+    console.log(req.ip);
+    //?her read işlemi bir görüntüleme:
+   const view = await View.create({
+      userId: req.user._id,
+      activityId: req.params.id,
+      ipAddress: req.ip,
+    })
+    console.log(view);
+    data.viewCount = data.viewCount + 1;
+    await data.save();
+
+//? data view eklenmiş bir şekilde response'a aktarılır
     res.status(202).send({
       error: false,
       data: data,
