@@ -6,6 +6,7 @@
 
 const User = require("../models/user");
 const Token = require("../models/token");
+const auth = require("./auth");
 
 module.exports = {
   list: async (req, res) => {
@@ -64,10 +65,23 @@ module.exports = {
 
     const data = await User.create(req.body);
 
-    res.status(201).send({
-      error: false,
-      data,
-    });
+
+   //? Register işleminden sonra:
+        /* AUTO LOGIN */
+        const tokenData = await Token.create({
+          userId: data._id,
+          token: passwordEncrypt(data._id + Date.now())
+      })
+
+      //* bearer oluşturmak ve göndermek için:(user bilgileri zaten gidiyor)
+      auth.login
+
+    //?  auth.login ile response yapılır.
+    // res.status(201).send({
+    //   error: false,
+    //   token: tokenData.token,
+    //   data,
+    // });
   },
 
   read: async (req, res) => {
