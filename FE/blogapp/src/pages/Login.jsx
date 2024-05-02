@@ -1,11 +1,13 @@
 import { Alert, Button, Label, Spinner, TextInput } from "flowbite-react";
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { loginStart, loginSuccess, loginFailure } from "../redux/user/userSlice";
 
 export default function Login() {
   const [formData, setFormData] = useState({});
-  const [errorMessage, setErrorMessage] = useState(null);
-  const [loading, setLoading] = useState(false);
+  const {loading, error: errorMessage} = useSelector(state => state.user)
+  const dispatch = useDispatch();
   const navigate = useNavigate();
   function handleChange(e) {
     setFormData({ ...formData, [e.target.id]: e.target.value.trim() });
@@ -15,13 +17,10 @@ export default function Login() {
     e.preventDefault();
     //  !formData.email && !formData.username => ikisi yoksa true döner
     if ((!formData.email && !formData.username) || !formData.password) {
-      return setErrorMessage(
-        "Password and one of the other fields are required"
-      );
+      return dispatch(loginFailure("Password and one of the other fields are required"));
     }
     try {
-      setLoading(true);
-      setErrorMessage(null);
+      dispatch(loginStart());
       const res = await fetch("http://127.0.0.1:8000/auth/login", {
         method: "POST",
         headers: {
@@ -32,15 +31,15 @@ export default function Login() {
       const data = await res.json();
       console.log(data);
       if (!data.success) {
-        setErrorMessage(data.message);
+        dispatch(loginFailure(data.message));
       }
-      setLoading(false);
+     
       if(res.ok){
+        dispatch(loginSuccess(data));
         navigate("/")
       }
     } catch (error) {
-      setErrorMessage(error.message);
-      setLoading(false);
+      dispatch(loginFailure(error.message));
     }
   };
 
