@@ -31,6 +31,9 @@ dbConnection()
 // Accept JSON:
 app.use(express.json())
 
+// CORS:
+app.use(require('cors')()) // Run with defaults.
+
 // Call static uploadFile:
 // app.use('/upload', express.static('./upload'))
 
