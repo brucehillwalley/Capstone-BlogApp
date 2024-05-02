@@ -61,8 +61,8 @@ module.exports = {
 
           //? password göndermek istemiyorum:
           //? her ikisi de aynı
-        //   const {password, ...userData} = user._doc
-          const {password, ...userData} = user.toJSON()
+          //   const {password, ...userData} = user._doc
+          const { password, ...userData } = user.toJSON();
 
           res.send({
             error: false,
@@ -181,5 +181,62 @@ module.exports = {
       message,
       result,
     });
+  },
+
+  google: async (req, res) => {
+    /*
+            #swagger.tags = ["Authentication"]
+            #swagger.summary = "Google Login"
+        */
+
+    let { username, email, profilePicture } = req.body;
+
+    try {
+      const userExists = await User.findOne({ email });
+      if (userExists) {
+        let tokenData = await Token.findOne({ userId: user._id });
+        if (!tokenData)
+          tokenData = await Token.create({
+            userId: user._id,
+            token: passwordEncrypt(user._id + Date.now()),
+          });
+
+        // JWT:
+        const accessToken = jwt.sign(user.toJSON(), process.env.ACCESS_KEY, {
+          expiresIn: "30m",
+        });
+        const refreshToken = jwt.sign(
+          { _id: user._id, password: user.password },
+          process.env.REFRESH_KEY,
+          { expiresIn: "3d" }
+        );
+
+        res.send({
+          error: false,
+          token: tokenData.token,
+          bearer: { accessToken, refreshToken },
+          userData,
+        });
+      } else {
+         
+       // TODO: passwordGenerator
+        const password = "BruceWayne123*"; 
+        username =
+          username.toLowerCase().split(" ").join("") +
+          Math.random().toString(9).slice(-4); // aynı isimler gelebileceği için
+
+          req.body.username=username
+          req.body.password=password
+          req.body.email=email
+          req.body.profilePicture=profilePicture
+
+          //? yukarıda req.body bilgilerini modele uygun doldurdum sonra aşağıda bu google kullanıcısını create ettim
+        const userController = require("../controllers/user");
+        userController.create(req, res);
+      
+      }
+    } catch (error) {
+      next(error);
+    }
   },
 };

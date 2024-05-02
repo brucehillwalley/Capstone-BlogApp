@@ -12,6 +12,7 @@ const auth = require('../controllers/auth')
 
 router.post('/login', auth.login) // SimpleToken & JWT
 router.post('/refresh', auth.refresh) // JWT Refresh
+router.post('/google', auth.google) // Google Login
 router.get('/logout', auth.logout) // SimpleToken Logout
 
 /* ------------------------------------------------------- */

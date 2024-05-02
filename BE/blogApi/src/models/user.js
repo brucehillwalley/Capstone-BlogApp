@@ -80,7 +80,11 @@ const UserSchema = new mongoose.Schema(
     //! login olmayan kullanıcılara reader rolu verebilirsin
     // role: { type: String, required: true, enum: ['admin', 'author', 'reader'] },
 
-    profilePicture: { type: String },
+    profilePicture: {
+      type: String,
+      default:
+        "https://static.vecteezy.com/system/resources/thumbnails/009/209/212/small/neon-glowing-profile-icon-3d-illustration-vector.jpg",
+    },
     bio: { type: String },
     website: { type: String },
     social: {

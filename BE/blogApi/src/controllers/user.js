@@ -86,7 +86,7 @@ module.exports = {
         );
         /* AUTO LOGIN */
 
-    //?  auth.login ile response yapılır.
+   
     res.status(201).send({
       error: false,
       token: tokenData.token,
