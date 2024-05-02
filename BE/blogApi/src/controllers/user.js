@@ -6,7 +6,8 @@
 
 const User = require("../models/user");
 const Token = require("../models/token");
-const auth = require("./auth");
+const passwordEncrypt  = require("../helpers/passwordEncrypt");
+const jwt = require("jsonwebtoken");
 
 module.exports = {
   list: async (req, res) => {
@@ -68,20 +69,30 @@ module.exports = {
 
    //? Register işleminden sonra:
         /* AUTO LOGIN */
+        //SIMPLE TOKEN:
         const tokenData = await Token.create({
           userId: data._id,
           token: passwordEncrypt(data._id + Date.now())
       })
 
-      //* bearer oluşturmak ve göndermek için:(user bilgileri zaten gidiyor)
-      auth.login
+        // JWT:
+        const accessToken = jwt.sign(data.toJSON(), process.env.ACCESS_KEY, {
+          expiresIn: "30m",
+        });
+        const refreshToken = jwt.sign(
+          { _id: data._id, password: data.password },
+          process.env.REFRESH_KEY,
+          { expiresIn: "3d" }
+        );
+        /* AUTO LOGIN */
 
     //?  auth.login ile response yapılır.
-    // res.status(201).send({
-    //   error: false,
-    //   token: tokenData.token,
-    //   data,
-    // });
+    res.status(201).send({
+      error: false,
+      token: tokenData.token,
+      bearer: { accessToken, refreshToken },
+      data,
+    });
   },
 
   read: async (req, res) => {
