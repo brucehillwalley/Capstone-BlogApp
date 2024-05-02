@@ -30,13 +30,13 @@ export default function Login() {
         body: JSON.stringify(formData),
       });
       const data = await res.json();
-      console.log(data);
+      // console.log(data);
       if (!data.success) {
         dispatch(loginFailure(data.message));
       }
      
       if(res.ok){
-        dispatch(loginSuccess(data));
+        dispatch(loginSuccess(data.userData));
         navigate("/")
       }
     } catch (error) {

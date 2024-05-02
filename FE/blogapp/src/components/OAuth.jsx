@@ -20,7 +20,7 @@ export default function OAuth() {
 
     try {
       const resultsFromGoogle = await signInWithPopup(auth, provider);
-      // console.log(resultsFromGoogle);
+      console.log(resultsFromGoogle.user.displayName);
       //? Veri tabanına kaydetmek için:
       // console.log(resultsFromGoogle.user.uid, resultsFromGoogle.user.displayName, resultsFromGoogle.user.email, resultsFromGoogle.user.photoURL);
       const res = await fetch("http://127.0.0.1:8000/auth/google", {
@@ -34,9 +34,11 @@ export default function OAuth() {
           profilePicture: resultsFromGoogle.user.photoURL,
         }),
       });
+     
       const data = await res.json();
+      // console.log(data);
       if (res.ok) {
-        dispatch(loginSuccess(data));
+        dispatch(loginSuccess(data.userData));
         // console.log(data);
         navigate("/");
       }

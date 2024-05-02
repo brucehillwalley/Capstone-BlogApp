@@ -91,7 +91,7 @@ module.exports = {
       error: false,
       token: tokenData.token,
       bearer: { accessToken, refreshToken },
-      data,
+      userData: data
     });
   },
 

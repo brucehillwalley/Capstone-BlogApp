@@ -194,19 +194,19 @@ module.exports = {
     try {
       const userExists = await User.findOne({ email });
       if (userExists) {
-        let tokenData = await Token.findOne({ userId: user._id });
+        let tokenData = await Token.findOne({ userId: userExists._id });
         if (!tokenData)
           tokenData = await Token.create({
-            userId: user._id,
-            token: passwordEncrypt(user._id + Date.now()),
+            userId: userExists._id,
+            token: passwordEncrypt(userExists._id + Date.now()),
           });
 
         // JWT:
-        const accessToken = jwt.sign(user.toJSON(), process.env.ACCESS_KEY, {
+        const accessToken = jwt.sign(userExists.toJSON(), process.env.ACCESS_KEY, {
           expiresIn: "30m",
         });
         const refreshToken = jwt.sign(
-          { _id: user._id, password: user.password },
+          { _id: userExists._id, password: userExists.password },
           process.env.REFRESH_KEY,
           { expiresIn: "3d" }
         );
@@ -215,7 +215,7 @@ module.exports = {
           error: false,
           token: tokenData.token,
           bearer: { accessToken, refreshToken },
-          userData,
+          userData: userExists,
         });
       } else {
          
@@ -236,7 +236,7 @@ module.exports = {
       
       }
     } catch (error) {
-      next(error);
+      res.send({ error: true, message: error.message });
     }
   },
 };
