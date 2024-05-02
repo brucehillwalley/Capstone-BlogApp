@@ -6,6 +6,8 @@ import Register from "./pages/Register";
 import Dashboard from "./pages/Dashboard";
 import Blogs from "./pages/Blogs";
 import Header from "./components/Header";
+import Footer from "./components/Footer";
+
 export default function App() {
   return (
     <BrowserRouter>
@@ -18,6 +20,7 @@ export default function App() {
         <Route path="/dashboard" element={<Dashboard />} />
         <Route path="/blogs" element={<Blogs />} />
       </Routes>
+      <Footer />
     </BrowserRouter>
   );
 }
