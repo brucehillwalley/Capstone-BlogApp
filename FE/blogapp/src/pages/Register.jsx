@@ -2,27 +2,27 @@ import { Alert, Button, Label, Spinner, TextInput } from "flowbite-react";
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import OAuth from "../components/OAuth";
+import { registerStart, registerSuccess, registerFailure } from "../redux/user/userSlice";
+import { useDispatch, useSelector } from "react-redux";
 
 export default function Register() {
   const [formData, setFormData] = useState({});
-  const [errorMessage, setErrorMessage] = useState(null);
-  const [loading, setLoading] = useState(false);
+  const {loading, error: errorMessage} = useSelector(state => state.user)
   const navigate = useNavigate();
+  const dispatch = useDispatch();
+
   function handleChange(e) {
     setFormData({ ...formData, [e.target.id]: e.target.value.trim() });
   }
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    //  !formData.email && !formData.username => ikisi yoksa true döner
-    if ((!formData.email && !formData.username) || !formData.password) {
-      return setErrorMessage(
-        "Password and one of the other fields are required"
-      );
+    if (!formData.email && !formData.username && !formData.password) {
+     return dispatch(registerFailure("All fields are required"));
     }
+  
     try {
-      setLoading(true);
-      setErrorMessage(null);
+      dispatch(registerStart());
       const res = await fetch("http://127.0.0.1:8000/users", {
         method: "POST",
         headers: {
@@ -31,18 +31,20 @@ export default function Register() {
         body: JSON.stringify(formData),
       });
       const data = await res.json();
-      console.log(data);
+      // console.log(data);
       if (!data.success) {
-        setErrorMessage(data.message);
+        dispatch(registerFailure(data.message));
+        
       }
-      setLoading(false);
+     
       if(res.ok){
+        dispatch(registerSuccess(data.userData));
         navigate("/")
       }
     } catch (error) {
-      setErrorMessage(error.message);
-      setLoading(false);
+      dispatch(registerFailure(error.message));
     }
+    
   };
 
   return (
@@ -114,6 +116,7 @@ export default function Register() {
               Login
             </Link>
           </div>
+      
           {errorMessage && (
             <Alert className="mt-5" color="failure">
               {errorMessage}
