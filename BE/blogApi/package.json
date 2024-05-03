@@ -2,7 +2,7 @@
   "title": "blog API",
   "name": "blogapi",
   "version": "1.0.0",
-  "description": "",
+  "description": "Activity Blog",
   "main": "index.js",
   "scripts": {
     "dev": "nodemon index.js",
@@ -24,7 +24,7 @@
     "multer": "^1.4.5-lts.1",
     "nodemailer": "^6.9.7",
     "redoc-express": "^2.1.0",
-    "swagger-autogen": "^2.23.6",
+    "swagger-autogen": "^2.23.7",
     "swagger-ui-express": "^5.0.0"
   }
 }

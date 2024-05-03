@@ -20,7 +20,7 @@ module.exports = {
                 required: true,
                 schema: {
                     "username": "test",
-                    "password": "1234",
+                    "password": "1234Test*",
                 }
             }
         */
