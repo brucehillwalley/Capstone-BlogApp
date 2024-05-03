@@ -27,10 +27,10 @@ const packageJson = require('./package.json')
 const document = {
 	// info: {
 	// 	version: "1.0.0",
-	// 	title: "Personnel API",
-	// 	description: "Personnel Management API Service",
-	// 	termsOfService: "http://www.clarusway.com",
-	// 	contact: { name: "Clarusway", email: "qadir@clarusway.com" },
+	// 	title: "Blog API",
+	// 	description: "Activity Blog",
+	// 	termsOfService: "",
+	// 	contact: { name: "bruce", email: "brucehillwalley@gmail.com" },
 	// 	license: { name: "BSD License", },
 	// },
 	info: {
