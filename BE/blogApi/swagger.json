@@ -13,7 +13,7 @@
       "name": "ISC"
     }
   },
-  "host": "0.0.0.0:4000",
+  "host": "activity-blogapp.onrender.com",
   "basePath": "/",
   "schemes": [
     "http",
