@@ -44,7 +44,7 @@ app.use('/documents/swagger', swaggerUi.serve, swaggerUi.setup(swaggerJson, { sw
 //? REDOC:
 const redoc = require('redoc-express')
 app.use('/documents/redoc', redoc({
-    title: 'PersonnelAPI',
+    title: 'BlogAPI',
     specUrl: '/documents/json'
 }))
 
