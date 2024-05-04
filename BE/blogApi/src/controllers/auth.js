@@ -20,7 +20,8 @@ module.exports = {
                 required: true,
                 schema: {
                     "username": "test",
-                    "password": "1234Test*",
+                    "email": "test@example.com",
+                    "password": "Test123*",
                 }
             }
         */
@@ -186,7 +187,9 @@ module.exports = {
   google: async (req, res) => {
     /*
             #swagger.tags = ["Authentication"]
-            #swagger.summary = "Google Login"
+            #swagger.summary = "Google Login or Register"
+            #swagger.description = 'Login or Register with Google account.'
+            
         */
 
     let { username, email, profilePicture } = req.body;
@@ -202,9 +205,13 @@ module.exports = {
           });
 
         // JWT:
-        const accessToken = jwt.sign(userExists.toJSON(), process.env.ACCESS_KEY, {
-          expiresIn: "30m",
-        });
+        const accessToken = jwt.sign(
+          userExists.toJSON(),
+          process.env.ACCESS_KEY,
+          {
+            expiresIn: "30m",
+          }
+        );
         const refreshToken = jwt.sign(
           { _id: userExists._id, password: userExists.password },
           process.env.REFRESH_KEY,
@@ -218,22 +225,20 @@ module.exports = {
           userData: userExists,
         });
       } else {
-         
-       // TODO: passwordGenerator
-        const password = "BruceWayne123*"; 
+        // TODO: passwordGenerator
+        const password = "BruceWayne123*";
         username =
           username.toLowerCase().split(" ").join("") +
           Math.random().toString(9).slice(-4); // aynı isimler gelebileceği için
 
-          req.body.username=username
-          req.body.password=password
-          req.body.email=email
-          req.body.profilePicture=profilePicture
+        req.body.username = username;
+        req.body.password = password;
+        req.body.email = email;
+        req.body.profilePicture = profilePicture;
 
-          //? yukarıda req.body bilgilerini modele uygun doldurdum sonra aşağıda bu google kullanıcısını create ettim
+        //? yukarıda req.body bilgilerini modele(required and validated) uygun doldurdum sonra aşağıda bu google kullanıcısını create ettim
         const userController = require("../controllers/user");
         userController.create(req, res);
-      
       }
     } catch (error) {
       res.send({ error: true, message: error.message });

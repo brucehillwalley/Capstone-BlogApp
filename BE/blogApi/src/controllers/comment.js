@@ -9,6 +9,18 @@ const Activity = require("../models/activity");
 
 module.exports = {
   list: async (req, res) => {
+    /*
+      #swagger.tags = ["Comment"]
+      #swagger.summary = "List Comments"
+      #swagger.description = `You can send query with endpoint for filter[], search[], sort[], page and limit.
+      <ul> Examples:
+          <li>URL/?<b>filter[field1]=value1&filter[field2]=value2</b></li>
+          <li>URL/?<b>search[field1]=value1&search[field2]=value2</b></li>
+          <li>URL/?<b>sort[field1]=1&sort[field2]=-1</b></li>
+          <li>URL/?<b>page=2&limit=1</b></li>
+      </ul>
+      `
+    */
     let customFilters = {
       isDeleted: false,
     };
@@ -26,7 +38,18 @@ module.exports = {
     });
   },
   create: async (req, res) => {
-    //? crate kullanıcının kendi id'si ile olması lazım
+    /*
+      #swagger.tags = ["Comment"]
+      #swagger.summary = "Create Comment"
+      #swagger.parameters['body'] = {
+        in: "body",
+        required: true,
+        schema: {
+            $ref: "#/definitions/Comment"
+        }
+      }
+    */
+    //? create kullanıcının kendi id'si ile olması lazım
     req.body.userId = req.user._id;
 
     const data = await Comment.create(req.body);
@@ -38,6 +61,10 @@ module.exports = {
     });
   },
   read: async (req, res) => {
+    /*
+      #swagger.tags = ["Comment"]
+      #swagger.summary = "Get Single Comment"
+    */
     let customFilters = {
       isDeleted: false,
     };
@@ -56,6 +83,17 @@ module.exports = {
     });
   },
   update: async (req, res) => {
+    /*
+      #swagger.tags = ["Comment"]
+      #swagger.summary = "Update Comment"
+      #swagger.parameters['body'] = {
+        in: 'body',
+        required: true,
+        schema: {
+            $ref: '#/definitions/Comment',
+        }
+      }
+    */
     //? admin harici herkes kendi Comment' ini güncelleyebilir
     if (!req.user.isAdmin) {
       //? admin harici gücellenemeyecek veriler:
@@ -97,6 +135,10 @@ module.exports = {
     });
   },
   delete: async (req, res) => {
+    /*
+      #swagger.tags = ["Comment"]
+      #swagger.summary = "Delete Comment"
+    */
     //? Comment zaten silinmiş ise 404 hatası verilir.
     const isAlreadyDeletedComment = (
       await Comment.findOne({ _id: req.params.id })

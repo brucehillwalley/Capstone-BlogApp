@@ -75,6 +75,19 @@ module.exports = {
     });
   },
   create: async (req, res) => {
+    /*
+        #swagger.tags = ["Activity"]
+        #swagger.summary = "Create Activity"
+        #swagger.parameters['body'] = {
+            in: 'body',
+            required: true,
+            schema: {
+                $ref: '#/definitions/Activity',
+            }
+        }
+    */
+
+
     //? create kullanıcının kendi id'si ile olması lazım
     req.body.userId = req.user._id;
 
@@ -101,6 +114,10 @@ module.exports = {
     });
   },
   read: async (req, res) => {
+  /*
+        #swagger.tags = ["Activity"]
+        #swagger.summary = "Get Single Activity"
+    */
     let customFilters = {
       isPublished: true,
       isDeleted: false,
@@ -141,6 +158,19 @@ module.exports = {
     });
   },
   update: async (req, res) => {
+    /*
+        #swagger.summary = 'Update Activity'
+        #swagger.description = 'Update Activity'
+        #swagger.parameters['body'] = {
+            in: 'body',
+            required: true,
+            schema: {
+                $ref: '#/definitions/Activity',
+                
+            }
+        }
+
+     */   
     
     //? admin harici herkes kendi activity' sini güncelleyebilir
     if (!req.user.isAdmin) {
@@ -220,7 +250,7 @@ module.exports = {
                         <li>URL/?<b>sort[field1]=asc&sort[field2]=desc</b></li>
                         <li>URL/?<b>page=2&limit=1</b></li>
                     </ul>
-    
+    `
     
    */
     //? admin haricindeki kullanıcılar silinen activity' ları göremez.
