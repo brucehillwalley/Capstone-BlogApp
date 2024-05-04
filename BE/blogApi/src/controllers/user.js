@@ -51,10 +51,9 @@ module.exports = {
                 required: true,
                 schema: {
                     "username": "test",
-                    "password": "1234",
+                    "password": "Test1234*",
                     "email": "test@site.com",
                     "isActive": true,
-                    "isStaff": false,
                     "isAdmin": false,
                 }
             }
