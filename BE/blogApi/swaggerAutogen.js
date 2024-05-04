@@ -41,10 +41,12 @@ const document = {
     contact: { name: packageJson.author, email: "brucehillwalley@gmail.com" },
     license: { name: packageJson.license },
   },
-  // host: "http://0.0.0.0:4000" for render local //render dont execute swaggerAutogen.js
+  // host:must be changed for render local //render dont execute swaggerAutogen.js
   host: `${HOST}:${PORT}`,
   basePath: "/",
   schemes: ["http", "https"],
+  consumes: ["application/json"],
+  produces: ["application/json"],
   // SimpleToken Settings:
   securityDefinitions: {
     Token: {
@@ -54,8 +56,14 @@ const document = {
       description:
         "Simple Token Authentication * Example: <b>Token ...tokenKey...</b>",
     },
+	Bearer: {
+		type: 'apiKey',
+		in: 'header',
+		name: 'Authorization',
+		description: 'JWT Authentication * Example: <b>Bearer ...accessToken...</b>'
+	},
   },
-  security: [{ Token: [] }],
+  security: [{ Token: [] }, { Bearer: [] }],
   definitions: {
     "/auth/login": {
       username: {
@@ -74,20 +82,14 @@ const document = {
         required: true,
       },
     },
-    // "Department": {
-    // 	"name": {
-    // 		type: "ObjectId",
-    // 		required: true
-    // 	}
-    // },
 
-    Category: require("./src/models/category").schema.obj,
+    User: require("./src/models/user").schema.obj,
     Activity: require("./src/models/activity").schema.obj,
     Comment: require("./src/models/comment").schema.obj,
+    Category: require("./src/models/category").schema.obj,
     View: require("./src/models/view").schema.obj,
-    User: require("./src/models/user").schema.obj,
-    Token: require("./src/models/token").schema.obj,
     Like: require("./src/models/like").schema.obj,
+    Token: require("./src/models/token").schema.obj,
   },
 };
 
