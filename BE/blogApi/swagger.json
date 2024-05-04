@@ -13,7 +13,7 @@
       "name": "ISC"
     }
   },
-  "host": "http://0.0.0.0:4000",
+  "host": "0.0.0.0:4000",
   "basePath": "/",
   "schemes": [
     "http",

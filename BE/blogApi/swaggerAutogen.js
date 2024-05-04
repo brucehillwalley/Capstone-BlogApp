@@ -42,7 +42,7 @@ const document = {
     license: { name: packageJson.license },
   },
   // host: "http://0.0.0.0:4000" for render local //render dont execute swaggerAutogen.js
-  host: `http://${HOST}:${PORT}`,
+  host: `${HOST}:${PORT}`,
   basePath: "/",
   schemes: ["http", "https"],
   // SimpleToken Settings:
