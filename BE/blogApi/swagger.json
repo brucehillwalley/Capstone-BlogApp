@@ -13,7 +13,7 @@
       "name": "ISC"
     }
   },
-  "host": "127.0.0.1:8000",
+  "host": "0.0.0.0:4000",
   "basePath": "/",
   "schemes": [
     "http",
@@ -185,7 +185,7 @@
                 },
                 "password": {
                   "type": "string",
-                  "example": "1234"
+                  "example": "Test1234*"
                 },
                 "email": {
                   "type": "string",
@@ -194,10 +194,6 @@
                 "isActive": {
                   "type": "boolean",
                   "example": true
-                },
-                "isStaff": {
-                  "type": "boolean",
-                  "example": false
                 },
                 "isAdmin": {
                   "type": "boolean",
