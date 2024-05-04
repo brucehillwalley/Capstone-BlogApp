@@ -22,7 +22,7 @@ export default function Login() {
     }
     try {
       dispatch(loginStart());
-      const res = await fetch("http://127.0.0.1:8000/auth/login", {
+      const res = await fetch(`${import.meta.env.VITE_APP_BASE_URL}/auth/login`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

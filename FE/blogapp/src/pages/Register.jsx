@@ -2,12 +2,16 @@ import { Alert, Button, Label, Spinner, TextInput } from "flowbite-react";
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import OAuth from "../components/OAuth";
-import { registerStart, registerSuccess, registerFailure } from "../redux/user/userSlice";
+import {
+  registerStart,
+  registerSuccess,
+  registerFailure,
+} from "../redux/user/userSlice";
 import { useDispatch, useSelector } from "react-redux";
 
 export default function Register() {
   const [formData, setFormData] = useState({});
-  const {loading, error: errorMessage} = useSelector(state => state.user)
+  const { loading, error: errorMessage } = useSelector((state) => state.user);
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
@@ -18,12 +22,12 @@ export default function Register() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!formData.email && !formData.username && !formData.password) {
-     return dispatch(registerFailure("All fields are required"));
+      return dispatch(registerFailure("All fields are required"));
     }
-  
+
     try {
       dispatch(registerStart());
-      const res = await fetch("http://127.0.0.1:8000/users", {
+      const res = await fetch(`${import.meta.env.VITE_APP_BASE_URL}/users`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -34,17 +38,15 @@ export default function Register() {
       // console.log(data);
       if (!data.success) {
         dispatch(registerFailure(data.message));
-        
       }
-     
-      if(res.ok){
+
+      if (res.ok) {
         dispatch(registerSuccess(data.userData));
-        navigate("/")
+        navigate("/");
       }
     } catch (error) {
       dispatch(registerFailure(error.message));
     }
-    
   };
 
   return (
@@ -59,8 +61,8 @@ export default function Register() {
             Blog
           </Link>
           <p className="text-sm mt-5">
-            This is a demo project. You can register with your email and password
-            or with Google.
+            This is a demo project. You can register with your email and
+            password or with Google.
           </p>
         </div>
 
@@ -104,9 +106,9 @@ export default function Register() {
                   <Spinner size="sm" />
                   <span className="pl-3">Loading...</span>
                 </>
-              ) : 
+              ) : (
                 "Register"
-              }
+              )}
             </Button>
             <OAuth />
           </form>
@@ -116,7 +118,7 @@ export default function Register() {
               Login
             </Link>
           </div>
-      
+
           {errorMessage && (
             <Alert className="mt-5" color="failure">
               {errorMessage}
