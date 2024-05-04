@@ -47,9 +47,13 @@
                   "type": "string",
                   "example": "test"
                 },
+                "email": {
+                  "type": "string",
+                  "example": "test@example.com"
+                },
                 "password": {
                   "type": "string",
-                  "example": "1234Test*"
+                  "example": "Test123*"
                 }
               }
             }
@@ -102,8 +106,8 @@
         "tags": [
           "Authentication"
         ],
-        "summary": "Google Login",
-        "description": "",
+        "summary": "Google Login or Register",
+        "description": "Login or Register with Google account.",
         "parameters": [
           {
             "name": "body",
@@ -382,7 +386,11 @@
     },
     "/categories/": {
       "get": {
-        "description": "",
+        "tags": [
+          "Category"
+        ],
+        "summary": "List Categories",
+        "description": "You can send query with endpoint for filter[], search[], sort[], page and limit.\r  <ul> Examples:\r  <li>URL/?<b>filter[field1]=value1&filter[field2]=value2</b></li>\r  <li>URL/?<b>search[field1]=value1&search[field2]=value2</b></li>\r  <li>URL/?<b>sort[field1]=1&sort[field2]=-1</b></li>\r  <li>URL/?<b>page=2&limit=1</b></li>\r  </ul> \r  ",
         "parameters": [
           {
             "name": "pg",
@@ -397,21 +405,18 @@
         }
       },
       "post": {
+        "tags": [
+          "Category"
+        ],
+        "summary": "Create Category",
         "description": "",
         "parameters": [
           {
             "name": "body",
             "in": "body",
+            "required": true,
             "schema": {
-              "type": "object",
-              "properties": {
-                "parentCategoryIds": {
-                  "example": "any"
-                },
-                "subCategoryIds": {
-                  "example": "any"
-                }
-              }
+              "$ref": "#/definitions/Category"
             }
           }
         ],
@@ -427,6 +432,10 @@
     },
     "/categories/{id}": {
       "get": {
+        "tags": [
+          "Category"
+        ],
+        "summary": "Get Single Category",
         "description": "",
         "parameters": [
           {
@@ -443,6 +452,10 @@
         }
       },
       "put": {
+        "tags": [
+          "Category"
+        ],
+        "summary": "Update Category",
         "description": "",
         "parameters": [
           {
@@ -450,6 +463,14 @@
             "in": "path",
             "required": true,
             "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/Category"
+            }
           }
         ],
         "responses": {
@@ -459,6 +480,10 @@
         }
       },
       "delete": {
+        "tags": [
+          "Category"
+        ],
+        "summary": "Delete Category",
         "description": "",
         "parameters": [
           {
@@ -478,6 +503,10 @@
         }
       },
       "patch": {
+        "tags": [
+          "Category"
+        ],
+        "summary": "Update Category",
         "description": "",
         "parameters": [
           {
@@ -485,6 +514,14 @@
             "in": "path",
             "required": true,
             "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/Category"
+            }
           }
         ],
         "responses": {
@@ -515,24 +552,18 @@
         }
       },
       "post": {
+        "tags": [
+          "Activity"
+        ],
+        "summary": "Create Activity",
         "description": "",
         "parameters": [
           {
             "name": "body",
             "in": "body",
+            "required": true,
             "schema": {
-              "type": "object",
-              "properties": {
-                "userId": {
-                  "example": "any"
-                },
-                "categoryId": {
-                  "example": "any"
-                },
-                "categoryName": {
-                  "example": "any"
-                }
-              }
+              "$ref": "#/definitions/Activity"
             }
           }
         ],
@@ -549,16 +580,20 @@
           "Activity"
         ],
         "summary": "Get Deleted Activity",
-        "description": "   You can send query with endpoint for filter[], search[], sort[], page and limit.    <ul> Examples:    <li>URL/?<b>filter[field1]=value1&filter[field2]=value2</b></li>    <li>URL/?<b>search[field1]=value1&search[field2]=value2</b></li>    <li>URL/?<b>sort[field1]=asc&sort[field2]=desc</b></li>    <li>URL/?<b>page=2&limit=1</b></li>    </ul>",
+        "description": "\r  You can send query with endpoint for filter[], search[], sort[], page and limit.\r   <ul> Examples:\r   <li>URL/?<b>filter[field1]=value1&filter[field2]=value2</b></li>\r   <li>URL/?<b>search[field1]=value1&search[field2]=value2</b></li>\r   <li>URL/?<b>sort[field1]=asc&sort[field2]=desc</b></li>\r   <li>URL/?<b>page=2&limit=1</b></li>\r   </ul>\r  ",
         "responses": {
-          "default": {
-            "description": ""
+          "200": {
+            "description": "OK"
           }
         }
       }
     },
     "/activities/{id}": {
       "get": {
+        "tags": [
+          "Activity"
+        ],
+        "summary": "Get Single Activity",
         "description": "",
         "parameters": [
           {
@@ -575,7 +610,8 @@
         }
       },
       "put": {
-        "description": "",
+        "summary": "Update Activity",
+        "description": "Update Activity",
         "parameters": [
           {
             "name": "id",
@@ -586,19 +622,9 @@
           {
             "name": "body",
             "in": "body",
+            "required": true,
             "schema": {
-              "type": "object",
-              "properties": {
-                "isDeleted": {
-                  "example": "any"
-                },
-                "DeletedId": {
-                  "example": "any"
-                },
-                "deletedAt": {
-                  "example": "any"
-                }
-              }
+              "$ref": "#/definitions/Activity"
             }
           }
         ],
@@ -634,7 +660,8 @@
         }
       },
       "patch": {
-        "description": "",
+        "summary": "Update Activity",
+        "description": "Update Activity",
         "parameters": [
           {
             "name": "id",
@@ -645,19 +672,9 @@
           {
             "name": "body",
             "in": "body",
+            "required": true,
             "schema": {
-              "type": "object",
-              "properties": {
-                "isDeleted": {
-                  "example": "any"
-                },
-                "DeletedId": {
-                  "example": "any"
-                },
-                "deletedAt": {
-                  "example": "any"
-                }
-              }
+              "$ref": "#/definitions/Activity"
             }
           }
         ],
@@ -673,7 +690,11 @@
     },
     "/comments/": {
       "get": {
-        "description": "",
+        "tags": [
+          "Comment"
+        ],
+        "summary": "List Comments",
+        "description": "You can send query with endpoint for filter[], search[], sort[], page and limit.\r  <ul> Examples:\r  <li>URL/?<b>filter[field1]=value1&filter[field2]=value2</b></li>\r  <li>URL/?<b>search[field1]=value1&search[field2]=value2</b></li>\r  <li>URL/?<b>sort[field1]=1&sort[field2]=-1</b></li>\r  <li>URL/?<b>page=2&limit=1</b></li>\r  </ul>\r  ",
         "responses": {
           "200": {
             "description": "OK"
@@ -681,18 +702,18 @@
         }
       },
       "post": {
+        "tags": [
+          "Comment"
+        ],
+        "summary": "Create Comment",
         "description": "",
         "parameters": [
           {
             "name": "body",
             "in": "body",
+            "required": true,
             "schema": {
-              "type": "object",
-              "properties": {
-                "userId": {
-                  "example": "any"
-                }
-              }
+              "$ref": "#/definitions/Comment"
             }
           }
         ],
@@ -719,6 +740,10 @@
     },
     "/comments/{id}": {
       "get": {
+        "tags": [
+          "Comment"
+        ],
+        "summary": "Get Single Comment",
         "description": "",
         "parameters": [
           {
@@ -735,6 +760,10 @@
         }
       },
       "put": {
+        "tags": [
+          "Comment"
+        ],
+        "summary": "Update Comment",
         "description": "",
         "parameters": [
           {
@@ -746,25 +775,9 @@
           {
             "name": "body",
             "in": "body",
+            "required": true,
             "schema": {
-              "type": "object",
-              "properties": {
-                "isDeleted": {
-                  "example": "any"
-                },
-                "deletedId": {
-                  "example": "any"
-                },
-                "deletedAt": {
-                  "example": "any"
-                },
-                "allEdits": {
-                  "example": "any"
-                },
-                "comment": {
-                  "example": "any"
-                }
-              }
+              "$ref": "#/definitions/Comment"
             }
           }
         ],
@@ -778,6 +791,10 @@
         }
       },
       "delete": {
+        "tags": [
+          "Comment"
+        ],
+        "summary": "Delete Comment",
         "description": "",
         "parameters": [
           {
@@ -800,6 +817,10 @@
         }
       },
       "patch": {
+        "tags": [
+          "Comment"
+        ],
+        "summary": "Update Comment",
         "description": "",
         "parameters": [
           {
@@ -811,25 +832,9 @@
           {
             "name": "body",
             "in": "body",
+            "required": true,
             "schema": {
-              "type": "object",
-              "properties": {
-                "isDeleted": {
-                  "example": "any"
-                },
-                "deletedId": {
-                  "example": "any"
-                },
-                "deletedAt": {
-                  "example": "any"
-                },
-                "allEdits": {
-                  "example": "any"
-                },
-                "comment": {
-                  "example": "any"
-                }
-              }
+              "$ref": "#/definitions/Comment"
             }
           }
         ],
@@ -845,7 +850,11 @@
     },
     "/likes/": {
       "get": {
-        "description": "",
+        "tags": [
+          "Like"
+        ],
+        "summary": "List Likes",
+        "description": "You can send query with endpoint for filter[], search[], sort[], page and limit.\r  <ul> Examples:\r  <li>URL/?<b>filter[field1]=value1&filter[field2]=value2</b></li>\r  <li>URL/?<b>search[field1]=value1&search[field2]=value2</b></li>\r  <li>URL/?<b>sort[field1]=1&sort[field2]=-1</b></li>\r  <li>URL/?<b>page=2&limit=1</b></li>\r  </ul>\r  ",
         "responses": {
           "200": {
             "description": "OK"
@@ -853,24 +862,18 @@
         }
       },
       "post": {
+        "tags": [
+          "Like"
+        ],
+        "summary": "Create Like",
         "description": "",
         "parameters": [
           {
             "name": "body",
             "in": "body",
+            "required": true,
             "schema": {
-              "type": "object",
-              "properties": {
-                "userId": {
-                  "example": "any"
-                },
-                "itemId": {
-                  "example": "any"
-                },
-                "itemType": {
-                  "example": "any"
-                }
-              }
+              "$ref": "#/definitions/Like"
             }
           }
         ],
@@ -886,6 +889,10 @@
     },
     "/likes/{id}": {
       "get": {
+        "tags": [
+          "Like"
+        ],
+        "summary": "Get Single Like",
         "description": "",
         "parameters": [
           {
@@ -902,6 +909,10 @@
         }
       },
       "put": {
+        "tags": [
+          "Like"
+        ],
+        "summary": "Update Like",
         "description": "",
         "parameters": [
           {
@@ -909,6 +920,14 @@
             "in": "path",
             "required": true,
             "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/Like"
+            }
           }
         ],
         "responses": {
@@ -921,6 +940,10 @@
         }
       },
       "delete": {
+        "tags": [
+          "Like"
+        ],
+        "summary": "Delete Like",
         "description": "",
         "parameters": [
           {
@@ -943,6 +966,10 @@
         }
       },
       "patch": {
+        "tags": [
+          "Like"
+        ],
+        "summary": "Update Like",
         "description": "",
         "parameters": [
           {
@@ -950,6 +977,14 @@
             "in": "path",
             "required": true,
             "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/Like"
+            }
           }
         ],
         "responses": {
