@@ -41,7 +41,7 @@ const document = {
 		contact: { name: packageJson.author, email: "brucehillwalley@gmail.com" },
 		license: { name: packageJson.license, },
 	},
-	host: `${HOST}:${PORT}`,
+	host: `http://${HOST}:${PORT}`,
 	basePath: '/',
 	schemes: ['http', 'https'],
 	// SimpleToken Settings:
