@@ -197,6 +197,17 @@ module.exports = {
     try {
       const userExists = await User.findOne({ email });
       if (userExists) {
+        //? soft delete kullanıldığından dolayı, kendini silen google kullanıcısı tekrar giriş yapmak isterse, giriş yapması için aşağıdaki bilgileri de güncellemek gerekir.
+        if (userExists.isDeleted) {
+          userExists.isActive = true;
+          userExists.isDeleted = false;
+          userExists.DeletedId = null;
+          userExists.deletedAt = null;
+          userExists.deletedReason = null;
+          //? sıfırdan yeniden kayıt olduğu görüntüsü için diğer bilgileri de sıfırlanabilir
+          userExists.profilePicture = null;
+          await userExists.save();
+        }
         let tokenData = await Token.findOne({ userId: userExists._id });
         if (!tokenData)
           tokenData = await Token.create({
@@ -225,6 +236,7 @@ module.exports = {
           userData: userExists,
         });
       } else {
+        //? continue with google registration
         // TODO: passwordGenerator
         const password = "BruceWayne123*";
         username =
