@@ -4,12 +4,14 @@ import { Link, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { loginStart, loginSuccess, loginFailure } from "../redux/user/userSlice";
 import OAuth from "../components/OAuth";
+import useAxios from "../service/useAxios";
 
 export default function Login() {
   const [formData, setFormData] = useState({});
   const {loading, error: errorMessage} = useSelector(state => state.user)
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const { axiosWithToken, axiosPublic } = useAxios()
   function handleChange(e) {
     setFormData({ ...formData, [e.target.id]: e.target.value.trim() });
   }
@@ -22,21 +24,26 @@ export default function Login() {
     }
     try {
       dispatch(loginStart());
-      const res = await fetch(`${import.meta.env.VITE_APP_BASE_URL}/auth/login`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(formData),
-      });
-      const data = await res.json();
-      // console.log(data);
-      if (!data.success) {
+      // const res = await fetch(`${import.meta.env.VITE_APP_BASE_URL}/auth/login`, {
+      //   method: "POST",
+      //   headers: {
+      //     "Content-Type": "application/json",
+      //   },
+      //   body: JSON.stringify(formData),
+      // });
+      
+      
+      const res = await axiosPublic.post(
+        "/auth/login/", formData
+      )
+      const {data} = res
+      console.log(data);
+      
+      if (data.error==true) {
+        console.log(data.message);
         dispatch(loginFailure(data.message));
-      }
-     
-      if(res.ok){
-        dispatch(loginSuccess(data.userData));
+      }else{
+        dispatch(loginSuccess(data));
         navigate("/")
       }
     } catch (error) {

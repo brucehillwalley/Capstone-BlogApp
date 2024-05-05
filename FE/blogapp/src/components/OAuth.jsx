@@ -23,7 +23,7 @@ export default function OAuth() {
       console.log(resultsFromGoogle.user.displayName);
       //? Veri tabanına kaydetmek için:
       // console.log(resultsFromGoogle.user.uid, resultsFromGoogle.user.displayName, resultsFromGoogle.user.email, resultsFromGoogle.user.photoURL);
-      const res = await fetch("http://127.0.0.1:8000/auth/google", {
+      const res = await fetch(`${import.meta.env.VITE_APP_BASE_URL}/auth/google`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -34,11 +34,11 @@ export default function OAuth() {
           profilePicture: resultsFromGoogle.user.photoURL,
         }),
       });
-     
+    //  console.log(res);
       const data = await res.json();
-      // console.log(data);
+      console.log(data);
       if (res.ok) {
-        dispatch(loginSuccess(data.userData));
+        dispatch(loginSuccess(data));
         // console.log(data);
         navigate("/");
       }

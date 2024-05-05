@@ -8,12 +8,16 @@ import {
   registerFailure,
 } from "../redux/user/userSlice";
 import { useDispatch, useSelector } from "react-redux";
+import useAxios from "../service/useAxios";
+
 
 export default function Register() {
   const [formData, setFormData] = useState({});
   const { loading, error: errorMessage } = useSelector((state) => state.user);
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const { axiosWithToken, axiosPublic } = useAxios()
+
 
   function handleChange(e) {
     setFormData({ ...formData, [e.target.id]: e.target.value.trim() });
@@ -27,21 +31,25 @@ export default function Register() {
 
     try {
       dispatch(registerStart());
-      const res = await fetch(`${import.meta.env.VITE_APP_BASE_URL}/users`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(formData),
-      });
-      const data = await res.json();
+      // const res = await fetch(`${import.meta.env.VITE_APP_BASE_URL}/users`, {
+      //   method: "POST",
+      //   headers: {
+      //     "Content-Type": "application/json",
+      //   },
+      //   body: JSON.stringify(formData),
+      // });
+      // const data = await res.json();
       // console.log(data);
-      if (!data.success) {
-        dispatch(registerFailure(data.message));
-      }
+      const res = await axiosPublic.post(
+        "/users", formData
+      )
+      const {data} = res
+      console.log(data);
 
-      if (res.ok) {
-        dispatch(registerSuccess(data.userData));
+      if (data.error==true) {
+        dispatch(registerFailure(data.message));
+      }else{
+        dispatch(registerSuccess(data));
         navigate("/");
       }
     } catch (error) {
