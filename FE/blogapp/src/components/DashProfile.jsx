@@ -26,7 +26,7 @@ import useAxios from "../service/useAxios";
 import { useNavigate } from "react-router-dom";
 
 export default function DashProfile() {
-  const { currentUser, token, error } = useSelector((state) => state.user);
+  const { currentUser, token, error, loading } = useSelector((state) => state.user);
   const [imageFile, setImageFile] = useState(null);
   const [imageFileUrl, setImageFileUrl] = useState(null);
   const filePickerRef = useRef(null);
@@ -258,9 +258,20 @@ export default function DashProfile() {
           placeholder="password"
           onChange={handleChange}
         />
-        <Button gradientDuoTone="purpleToBlue" type="submit" outline>
-          Update
+        <Button gradientDuoTone="purpleToBlue" type="submit" outline disabled={loading || imageFileUploading}>
+         {loading ? "Loading..." : "Update"}
         </Button>
+        {currentUser && (
+          <Link to={'/create-activity'}>
+            <Button
+              type='button'
+              gradientDuoTone='purpleToPink'
+              className='w-full'
+            >
+              Create an activity
+            </Button>
+          </Link>
+        )}
       </form>
       <div className="text-red-500 flex justify-between mt-5">
         <span className="cursor-pointer" onClick={() => setShowModal(true)}>
