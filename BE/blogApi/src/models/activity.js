@@ -74,6 +74,16 @@ const ActivitySchema = new mongoose.Schema(
       type: Number,
       default: 0,
     },
+    slug: { // Yeni alan: URL dostu metin
+      type: String,
+      required: true,
+      trim: true,
+      unique: true,
+      
+      default: function() {
+        return this.title.toLowerCase().replace(/\s+/g, '-');
+      }
+    },
     //?SOFT DELETE
     deletedAt: {
       type: Date,
