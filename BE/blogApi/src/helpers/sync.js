@@ -58,6 +58,7 @@ const transferUsersCollection = async () => {
       ...user,
       id: null,
       password: user.password + "*123",
+      profilePicture: user.image,
     });
   });
   console.log(

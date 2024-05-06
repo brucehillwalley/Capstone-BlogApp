@@ -97,7 +97,7 @@ const UserSchema = new mongoose.Schema(
       timezone: { type: String, default: "UTC+03:00" }, // Varsayılan zaman dilimi
     },
     actionsActivity: {
-      Viewed: { type: mongoose.Schema.Types.ObjectId, ref: "View" }, // Görüntülenen gönderi sayısı
+      Viewed: [{ type: mongoose.Schema.Types.ObjectId, ref: "View" }], // Görüntülenen gönderi sayısı
       comments: [{ type: mongoose.Schema.Types.ObjectId, ref: "Comment" }], // Kullanıcı yorumları
       likes: [{ type: mongoose.Schema.Types.ObjectId, ref: "Like" }], // Kullanıcı beğenileri
     },
@@ -106,8 +106,8 @@ const UserSchema = new mongoose.Schema(
       comments: [{ type: mongoose.Schema.Types.ObjectId, ref: "CommentPlan" }], // Kullanıcı yorumları
       likes: [{ type: mongoose.Schema.Types.ObjectId, ref: "LikePlan" }], // Kullanıcı beğenileri
     },
+    //?SOFT DELETE
     deletedAt: {
-      //?SOFT DELETE
       type: Date,
       default: null,
     },
@@ -119,6 +119,10 @@ const UserSchema = new mongoose.Schema(
     isDeleted: {
       type: Boolean,
       default: false,
+    },
+    deletedReason: {
+      type: String,
+      default: null,
     },
   },
   { collection: "users", timestamps: true }
