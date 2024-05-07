@@ -125,6 +125,8 @@ module.exports = {
 
     //? kullanıcı kendine ait yayınlanmayan Activity' ı görebilir
     const userId = (await Activity.findOne({ _id: req.params.id })).userId;
+    // console.log(req.user);
+    // console.log(userId);
     if (userId.equals(req.user._id)) {
       customFilters = { isDeleted: false };
     }

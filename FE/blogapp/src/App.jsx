@@ -10,6 +10,7 @@ import Footer from "./components/Footer";
 import PrivateRoute from "./components/PrivateRoute";
 import CreateActivity from "./pages/CreateActivity";
 import OnlyAdminPrivateRoute from "./components/OnlyAdminPrivateRoute";
+import UpdateActivity from "./pages/UpdateActivity";
 
 export default function App() {
   return (
@@ -24,7 +25,7 @@ export default function App() {
           <Route path="/dashboard" element={<Dashboard />} />
            {/* Login olan her kullanıcı post yapabilsin */}
           <Route path="/create-activity" element={<CreateActivity />} />
-          {/* <Route path="/update-post/:postId" element={<UpdatePost />} /> */}
+          <Route path="/update-activity/:postId" element={<UpdateActivity />} />
         </Route>
         <Route element={<OnlyAdminPrivateRoute />}>
           {/* <Route path='/create-post' element={<CreatePost />} />

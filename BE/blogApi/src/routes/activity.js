@@ -20,7 +20,7 @@ router.route('/')
 router.get('/listdeleted',isAdmin,activity.listDeleted)
 
 router.route('/:id')
-    .get(activity.read)
+    .get(isLogin,activity.read)
     .put(isLogin, activity.update)
     .patch(isLogin,activity.update)
     .delete(isLogin,activity.delete)

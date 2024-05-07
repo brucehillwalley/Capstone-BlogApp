@@ -140,6 +140,7 @@ export default function DashMyActivity() {
                         onClick={() => {
                             setShowModal(true)
                             setPostIdToDelete(activity._id)
+                            
                             }}>
                         Delete
                       </span>
