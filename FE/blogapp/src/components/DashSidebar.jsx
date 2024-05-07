@@ -80,7 +80,7 @@ export default function DashSidebar() {
               labelColor="dark"
               as="div"
             >
-              My Activities
+              My Posts
             </SidebarItem>
           </Link>
           {/* // Admin Panel */}
@@ -102,7 +102,7 @@ export default function DashSidebar() {
                   labelColor="dark"
                   as="div"
                 >
-                  Activities
+                 User Activities
                 </SidebarItem>
               </Link>
               <Link to="/dashboard?tab=comments">
