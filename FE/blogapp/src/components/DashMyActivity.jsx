@@ -11,6 +11,7 @@ export default function DashMyActivity() {
   const [showMore, setShowMore] = useState(true);
   const [showModal, setShowModal] = useState(false);
   const [postIdToDelete, setPostIdToDelete] = useState("");
+  const [page, setPage] = useState(2);
   const { axiosWithToken } = useAxios();
   const [activitiesState, setActivitiesState] = useState([]);
   useEffect(() => {
@@ -46,11 +47,13 @@ export default function DashMyActivity() {
       const res = await axiosWithToken.get(
         `${import.meta.env.VITE_APP_BASE_URL}/activities?author=${
           currentUser._id
-        }&page=2`
+        }&page=${page}`
       );
 
       if (!res.data.error) {
         setActivitiesState((prev) => [...prev, ...res.data.data]);
+        setPage((prev) => prev + 1);
+        console.log(page);
         
         if (res.data.data.length < 9) {
           setShowMore(false);
