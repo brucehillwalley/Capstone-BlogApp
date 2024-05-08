@@ -67,6 +67,14 @@ const UserSchema = new mongoose.Schema(
       type: Boolean,
       default: true,
     },
+    slug: {
+      type: String,
+      trim: true,
+      unique: true,
+      default: function () {
+        return this.username.toLowerCase().replace(/\s+/g, "-");
+      },
+    },
 
     // isAuthor: {
     //   type: Boolean,

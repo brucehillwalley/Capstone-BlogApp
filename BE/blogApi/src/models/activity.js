@@ -82,7 +82,8 @@ const ActivitySchema = new mongoose.Schema(
       
       default: function() {
         return this.title.toLowerCase().replace(/\s+/g, '-');
-      }
+      },
+      
     },
     //?SOFT DELETE
     deletedAt: {

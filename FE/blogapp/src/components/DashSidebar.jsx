@@ -102,7 +102,7 @@ export default function DashSidebar() {
                   labelColor="dark"
                   as="div"
                 >
-                 User Activities
+                 User Posts
                 </SidebarItem>
               </Link>
               <Link to="/dashboard?tab=comments">

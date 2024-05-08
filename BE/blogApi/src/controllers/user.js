@@ -63,6 +63,13 @@ module.exports = {
     // req.body.isAuthor = false;
     req.body.isAdmin = false;
 
+     //? slug:
+     req.body.slug = req.body.username
+     .split(" ")
+     .join("-")
+     .toLowerCase()
+     .replace(/[^a-zA-Z0-9-]/g, "");
+
     const data = await User.create(req.body);
 
 
@@ -148,6 +155,15 @@ module.exports = {
     let customFilter = { _id: req.params.id };
     if (!req.user.isAdmin) {
       customFilter = { _id: req.user._id };
+    }
+
+    if(req.body.username){
+       //? slug:
+    req.body.slug = req.body.username
+    .split(" ")
+    .join("-")
+    .toLowerCase()
+    .replace(/[^a-zA-Z0-9-]/g, "");
     }
 
     const data = await User.updateOne({ ...customFilter }, req.body, {
