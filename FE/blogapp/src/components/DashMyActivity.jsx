@@ -112,7 +112,7 @@ export default function DashMyActivity() {
                     {new Date(activity.updatedAt).toLocaleDateString()}
                   </Table.Cell>
                   <Table.Cell>
-                    <Link to={`/activity/${activity.slug}`}>
+                    <Link to={`/activity/${activity._id}`}>
                       <img
                         src={activity.image}
                         alt={activity.title}
@@ -123,7 +123,7 @@ export default function DashMyActivity() {
                   <Table.Cell>
                     <Link
                       className="font-medium text-gray-900 dark:text-white"
-                      to={`/activity/${activity.slug}`}
+                      to={`/activity/${activity._id}`}
                     >
                       {activity.title}
                     </Link>

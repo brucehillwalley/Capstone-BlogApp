@@ -151,7 +151,7 @@ module.exports = {
       activityId: req.params.id,
       ipAddress: req.ip,
     });
-    console.log(view);
+    // console.log(view);
     data.viewCount = data.viewCount + 1;
     await data.save();
 
@@ -207,9 +207,9 @@ module.exports = {
     res.status(202).send({
       error: false,
       body: req.body,
-      data: data, // info about update
+      oldData: data, // info about update
       // güncel veriyi istiyorsan tekrar çağır
-      newdata: newdata,
+      data: newdata,
     });
   },
   delete: async (req, res) => {

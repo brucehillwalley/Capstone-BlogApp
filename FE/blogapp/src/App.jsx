@@ -11,6 +11,7 @@ import PrivateRoute from "./components/PrivateRoute";
 import CreateActivity from "./pages/CreateActivity";
 import OnlyAdminPrivateRoute from "./components/OnlyAdminPrivateRoute";
 import UpdateActivity from "./pages/UpdateActivity";
+import ActivityPage from "./pages/ActivityPage";
 
 export default function App() {
   return (
@@ -28,10 +29,12 @@ export default function App() {
           <Route path="/update-activity/:postId" element={<UpdateActivity />} />
         </Route>
         <Route element={<OnlyAdminPrivateRoute />}>
+          {/* buraya update user olabilir */}
           {/* <Route path='/create-post' element={<CreatePost />} />
           <Route path='/update-post/:postId' element={<UpdatePost />} /> */}
         </Route>
         <Route path="/blogs" element={<Blogs />} />
+        <Route path="/activity/:actId" element={<ActivityPage />} />
       </Routes>
       <Footer />
     </BrowserRouter>

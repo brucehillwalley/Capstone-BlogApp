@@ -97,7 +97,7 @@ const { postId } = useParams();
       console.log(data);
       if(!data.error) {
         setPublishError(null);
-        navigate(`/activity/${data.newdata.slug}`); //? fix newdata to newData
+        navigate(`/activity/${data.data._id}`); 
       }
     } catch (error) {
       setPublishError("Something went wrong");
