@@ -125,17 +125,19 @@ module.exports = {
       isDeleted: false,
     };
 
-    //? kullanıcı kendine ait yayınlanmayan Activity' ı görebilir
-    const userId = (await Activity.findOne({ _id: req.params.id })).userId;
-    // console.log(req.user);
-    // console.log(userId);
-    if (userId.equals(req.user._id)) {
-      customFilters = { isDeleted: false };
-    }
+    if (req.user) {
+      //? kullanıcı kendine ait yayınlanmayan Activity' ı görebilir
+      const userId = (await Activity.findOne({ _id: req.params.id })).userId;
+      // console.log(req.user);
+      // console.log(userId);
+      if (userId.equals(req.user._id)) {
+        customFilters = { isDeleted: false };
+      }
 
-    //? admin haricindeki kullanıcılar silinen ve yayınlanmayan Activity' yi göremez.
-    if (req.user?.isAdmin) {
-      customFilters = {};
+      //? admin haricindeki kullanıcılar silinen ve yayınlanmayan Activity' yi göremez.
+      if (req.user?.isAdmin) {
+        customFilters = {};
+      }
     }
 
     const data = await Activity.findOne({
@@ -147,7 +149,7 @@ module.exports = {
     console.log(req.ip);
     //?her read işlemi bir görüntüleme:
     const view = await View.create({
-      userId: req.user._id,
+      userId: req.user?._id,
       activityId: req.params.id,
       ipAddress: req.ip,
     });

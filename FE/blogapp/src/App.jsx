@@ -12,10 +12,12 @@ import CreateActivity from "./pages/CreateActivity";
 import OnlyAdminPrivateRoute from "./components/OnlyAdminPrivateRoute";
 import UpdateActivity from "./pages/UpdateActivity";
 import ActivityPage from "./pages/ActivityPage";
+import ScrollToTop from "./components/ScrollToTop";
 
 export default function App() {
   return (
     <BrowserRouter>
+      <ScrollToTop />
       <Header />
       <Routes>
         <Route path="/" element={<Home />} />

@@ -5,6 +5,7 @@ import CallToAction from '../components/CallToAction';
 // import CommentSection from '../components/CommentSection';
 // import activityCard from '../components/activityCard';
 import useAxios from "../service/useAxios";
+import CommentSection from "../components/CommentSection";
 
 export default function ActivityPage() {
 
@@ -93,7 +94,7 @@ export default function ActivityPage() {
       <div className='max-w-4xl mx-auto w-full'>
         <CallToAction />
       </div>
-      {/* <CommentSection activityId={activity._id} /> */}
+      <CommentSection activityId={activity._id} />
 
       <div className="flex flex-col justify-center items-center mb-5">
         <h1 className="text-xl mt-5">Recent articles</h1>
