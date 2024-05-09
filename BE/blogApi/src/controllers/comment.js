@@ -30,10 +30,10 @@ module.exports = {
       customFilters = {};
     }
 
-    const data = await res.getModelList(Comment, customFilters);
+    const data = await res.getModelList(Comment, customFilters,'userId');
     res.status(200).send({
       error: false,
-      details: await res.getModelListDetails(Comment, customFilters),
+      details: await res.getModelListDetails(Comment, customFilters, 'userId'),
       data: data,
     });
   },
@@ -76,7 +76,7 @@ module.exports = {
     const data = await Comment.findOne({
       _id: req.params.id,
       ...customFilters,
-    });
+    }).populate('userId');
     res.status(202).send({
       error: false,
       data: data,

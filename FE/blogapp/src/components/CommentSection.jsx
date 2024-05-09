@@ -2,7 +2,7 @@ import { Alert, Button, Modal, TextInput, Textarea } from 'flowbite-react';
 import { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { Link, useNavigate } from 'react-router-dom';
-// import Comment from './Comment';
+import Comment from './Comment';
 import { HiOutlineExclamationCircle } from 'react-icons/hi';
 import useAxios from '../service/useAxios';
 
@@ -14,7 +14,7 @@ export default function CommentSection({ activityId }) {
   const [showModal, setShowModal] = useState(false);
   const [commentToDelete, setCommentToDelete] = useState(null);
   const navigate = useNavigate();
-  const { axiosWithToken } = useAxios();
+  const { axiosWithToken, axiosPublic } = useAxios();
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (comment.length > 200) {
@@ -25,7 +25,7 @@ export default function CommentSection({ activityId }) {
        `/comments/`,
        {userId: currentUser._id ,comment, activityId },
      );
-     console.log(res);
+    //  console.log(res);
 
       if (!res.data.error) {
         setComment('');
@@ -40,8 +40,9 @@ export default function CommentSection({ activityId }) {
   useEffect(() => {
     const getComments = async () => {
       try {
-        const res = await axiosWithToken.get(`/comments?filter[activityId]=${activityId}`);
-        // console.log(res.data.data);
+        //? logn olmayan kullanıcılar yorum okuyabilir
+        const res = await axiosPublic.get(`/comments?filter[activityId]=${activityId}`);
+        console.log(res.data.data);
         if (!res.data.error) {
           setComments(res.data.data);
         }
@@ -106,6 +107,7 @@ export default function CommentSection({ activityId }) {
       console.log(error.message);
     }
   };
+  // console.log(comments[0].userId.username);
   return (
     <div className='max-w-2xl mx-auto w-full p-3'>
       {currentUser ? (
@@ -168,7 +170,7 @@ export default function CommentSection({ activityId }) {
               <p>{comments.length}</p>
             </div>
           </div>
-          {/* {comments.map((comment) => (
+          {comments.map((comment) => (
             <Comment
               key={comment._id}
               comment={comment}
@@ -179,7 +181,7 @@ export default function CommentSection({ activityId }) {
                 setCommentToDelete(commentId);
               }}
             />
-          ))} */}
+          ))}
         </>
       )}
       <Modal
