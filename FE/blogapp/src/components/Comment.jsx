@@ -12,8 +12,7 @@ export default function Comment({ comment, onLike, onEdit, onDelete }) {
   const [editedContent, setEditedContent] = useState(comment.comment);
   const { currentUser } = useSelector((state) => state.user);
   const { axiosWithToken, axiosPublic } = useAxios();
-  const [isLiked, setIsLiked] = useState(comment.likes.includes(currentUser._id));
-  console.log(isLiked);
+
  
 
 
