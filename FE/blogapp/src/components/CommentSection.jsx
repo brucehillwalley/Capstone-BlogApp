@@ -67,13 +67,13 @@ export default function CommentSection({ activityId }) {
       const existingLike = await axiosWithToken.get(
         `/likes?filter[userId]=${currentUser._id}&filter[itemId]=${commentId}`
       );
-      console.log(existingLike.data.data.length);
+      // console.log(existingLike.data.data.length);
 
       if (existingLike.data.data.length > 0) {
         const res = await axiosWithToken.delete(
           `/likes/${existingLike.data.data[0]._id}`
         );
-        console.log(res.data == "");
+        // console.log(res.data == "");
      
   
         if (res.data == "") {
@@ -90,7 +90,6 @@ export default function CommentSection({ activityId }) {
           );
         }
       } else {
-        
         const res = await axiosWithToken.post(`/likes/`, {
           userId: currentUser._id,
           itemId: commentId,
