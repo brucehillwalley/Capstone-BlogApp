@@ -40,7 +40,7 @@ export default function CommentSection({ activityId }) {
   useEffect(() => {
     const getComments = async () => {
       try {
-        //? logn olmayan kullanıcılar yorum okuyabilir
+        //? login olmayan kullanıcılar yorum okuyabilir
         const res = await axiosPublic.get(`/comments?filter[activityId]=${activityId}`);
         console.log(res.data.data);
         if (!res.data.error) {

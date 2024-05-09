@@ -86,19 +86,19 @@ export default function Comment({ comment, onLike, onEdit, onDelete }) {
           </>
         ) : (
           <>
-            <p className='text-gray-500 pb-2'>{comment.content}</p>
+            <p className='text-gray-500 pb-2'>{comment.comment}</p>
             <div className='flex items-center pt-2 text-xs border-t dark:border-gray-700 max-w-fit gap-2'>
-              {/* <button
+              <button
                 type='button'
-                onClick={() => onLike(comment._id)}
+                // onClick={() => onLike(comment._id)}
                 className={`text-gray-400 hover:text-blue-500 ${
                   currentUser &&
-                  comment.likes.includes(currentUser._id) &&
+                //   comment.likes.includes(currentUser._id) &&
                   '!text-blue-500'
                 }`}
               >
                 <FaThumbsUp className='text-sm' />
-              </button> */}
+              </button>
               <p className='text-gray-400'>
                 {comment.numberOfLikes > 0 &&
                   comment.numberOfLikes +
