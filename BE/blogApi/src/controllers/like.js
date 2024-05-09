@@ -58,9 +58,9 @@ module.exports = {
     const data = await Like.create(req.body);
     //? activity veya comment için likeCount'u arttırın
     if(req.body.itemType === "activity") {
-      await Activity.updateOne({ _id: req.body.itemId }, { $inc: { likeCount: 1 } });
+      await Activity.updateOne({ _id: req.body.itemId }, { $inc: { likeCount: 1 }, $push: { likes: req.user._id } });
     }else if(req.body.itemType === "comment") {
-      await Comment.updateOne({ _id: req.body.itemId }, { $inc: { likeCount: 1 } });
+      await Comment.updateOne({ _id: req.body.itemId }, { $inc: { likeCount: 1 }, $push: { likes: req.user._id } });
     }
 
     res.status(201).send({
@@ -131,9 +131,9 @@ module.exports = {
     const data = await Like.deleteOne({_id:req.params.id} );
       //? activity veya comment için likeCount'u azalt:
       if(likeData.itemType === "activity") {
-        await Activity.updateOne({ _id: likeData.itemId }, { $inc: { likeCount: -1 } });
+        await Activity.updateOne({ _id: likeData.itemId }, { $inc: { likeCount: -1 }, $pull: { likes: req.user._id } });
       }else if(likeData.itemType === "comment") {
-        await Comment.updateOne({ _id: likeData.itemId }, { $inc: { likeCount: -1 } });
+        await Comment.updateOne({ _id: likeData.itemId }, { $inc: { likeCount: -1 }, $pull: { likes: req.user._id } });
       }
     console.log(data);
     res.sendStatus(data.deletedCount >= 1 ? 204 : 404);

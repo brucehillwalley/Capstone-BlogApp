@@ -27,6 +27,10 @@ const CommentSchema = new mongoose.Schema(
       type: [String],
       default: [],
     },
+    likes: {
+      type: Array,
+      default: [],
+    },
     likeCount: {
        type: Number,
        default: 0, 

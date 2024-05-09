@@ -66,6 +66,10 @@ const ActivitySchema = new mongoose.Schema(
       type: Boolean,
       default: false,
     },
+    likes: {
+      type: Array,
+      default: [],
+    },
     likeCount: {
       type: Number,
       default: 0,

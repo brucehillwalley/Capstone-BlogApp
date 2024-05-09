@@ -13,13 +13,13 @@ const { isLogin, isAdmin } = require('../middlewares/permissions')
 router.use(isLogin)
 
 router.route('/')
-    .get(isAdmin,like.list)
+    .get(like.list)
     .post(like.create)
 
 router.route('/:id')
     .get(like.read)
-    .put(isAdmin, like.update)
-    .patch(isAdmin, like.update)
+    .put(like.update)
+    .patch(like.update)
     .delete(like.delete)
 
 /* ------------------------------------------------------- */

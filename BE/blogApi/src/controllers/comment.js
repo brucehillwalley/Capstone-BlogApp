@@ -52,7 +52,8 @@ module.exports = {
     //? create kullanıcının kendi id'si ile olması lazım
     req.body.userId = req.user._id;
 
-    const data = await Comment.create(req.body);
+    //? populate ile user bilgisi eklendi. Populate ayrı asenkron işlem
+    const data = await (await Comment.create(req.body)).populate('userId');
 
     res.status(201).send({
       error: false,
