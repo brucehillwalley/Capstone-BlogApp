@@ -127,14 +127,12 @@ export default function CommentSection({ activityId }) {
     setShowModal(false);
     try {
       if (!currentUser) {
-        navigate("/sign-in");
+        navigate("/login");
         return;
       }
-      const res = await fetch(`/api/comment/deleteComment/${commentId}`, {
-        method: "DELETE",
-      });
-      if (res.ok) {
-        const data = await res.json();
+      const res = await axiosWithToken.delete(`/comments/${commentId}`);
+
+      if (res.status === 204) {
         setComments(comments.filter((comment) => comment._id !== commentId));
       }
     } catch (error) {
