@@ -16,20 +16,16 @@ export default function Comment({ comment, onLike, onEdit, onDelete }) {
   const handleEdit = () => {
     setIsEditing(true);
     setEditedContent(comment.comment);
+   
   };
 
   const handleSave = async () => {
     try {
-      const res = await fetch(`/api/comment/editComment/${comment._id}`, {
-        method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          content: editedContent,
-        }),
-      });
-      if (res.ok) {
+      const res = await axiosWithToken.put(`/comments/${comment._id}`, {
+        comment: editedContent,
+      })
+      console.log(res.data);
+      if (!res.data.false) {
         setIsEditing(false);
         onEdit(comment, editedContent);
       }
