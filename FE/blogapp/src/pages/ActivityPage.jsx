@@ -1,23 +1,22 @@
 import { Button, Spinner } from "flowbite-react";
 import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
-import CallToAction from '../components/CallToAction';
+import CallToAction from "../components/CallToAction";
 // import CommentSection from '../components/CommentSection';
-// import activityCard from '../components/activityCard';
+import ActivityCard from "../components/ActivityCard";
 import useAxios from "../service/useAxios";
 import CommentSection from "../components/CommentSection";
 
 export default function ActivityPage() {
-
   const { actId } = useParams();
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(false);
   const [activity, setActivity] = useState(null);
-  const [recentActivities, setRecentactivities] = useState(null);
-  const { axiosWithToken } = useAxios();
+  const [recentActivities, setRecentActivities] = useState(null);
+  const { axiosWithToken, axiosPublic } = useAxios();
 
   useEffect(() => {
-    const fetchactivity = async () => {
+    const getActivity = async () => {
       try {
         setLoading(true);
         const res = await axiosWithToken.get(`/activities/${actId}`);
@@ -37,19 +36,21 @@ export default function ActivityPage() {
         setLoading(false);
       }
     };
-    fetchactivity();
+    getActivity();
   }, [actId]);
 
   useEffect(() => {
     try {
-      const fetchRecentactivitys = async () => {
-        const res = await fetch(`/api/activity/getactivitys?limit=3`);
-        const data = await res.json();
-        if (res.ok) {
-          setRecentactivitys(data.activitys);
+      const getRecentActivities = async () => {
+        const res = await axiosPublic.get(
+          `/activities?sort[createdAt]=desc&limit=3`
+        );
+        // console.log(res.data);
+        if (!res.data.error) {
+          setRecentActivities(res.data.data);
         }
       };
-      //   fetchRecentactivitys();
+      getRecentActivities();
     } catch (error) {
       console.log(error.message);
     }
@@ -74,15 +75,30 @@ export default function ActivityPage() {
           {activity && activity.categoryName}
         </Button>
       </Link>
-      <img
-        src={activity && activity.image}
-        alt={activity && activity.title}
-        className="mt-10 p-3 max-h-[600px] w-full object-cover"
-      />
+      <div className="">
+        <div className="flex items-center justify-end gap-2 mx-auto w-full max-w-2xl text-xs ">
+          <span className="italic">
+           Authored By, {activity && activity.userId.username}
+          </span>
+          <img
+            src={activity.userId.profilePicture}
+            alt={activity.userId.username}
+            className="w-10 h-10 object-cover bg-gray-500 rounded-full "
+          />
+        </div>
+        <img
+          src={activity && activity.image}
+          alt={activity && activity.title}
+          className="mt-3 p-3 max-h-[600px] w-full object-cover"
+        />
+      </div>
       <div className="flex justify-between p-3 border-b border-slate-500 mx-auto w-full max-w-2xl text-xs">
         <span>
           {activity && new Date(activity.createdAt).toLocaleDateString()}
         </span>
+        {/* <span className="italic">
+          By, {activity && activity.userId.username}
+        </span> */}
         <span className="italic">
           {activity && (activity.content.length / 1000).toFixed(0)} mins read
         </span>
@@ -91,7 +107,7 @@ export default function ActivityPage() {
         className="p-3 max-w-2xl mx-auto w-full activity-content"
         dangerouslySetInnerHTML={{ __html: activity && activity.content }}
       ></div>
-      <div className='max-w-4xl mx-auto w-full'>
+      <div className="max-w-4xl mx-auto w-full">
         <CallToAction />
       </div>
       <CommentSection activityId={activity._id} />
@@ -99,8 +115,10 @@ export default function ActivityPage() {
       <div className="flex flex-col justify-center items-center mb-5">
         <h1 className="text-xl mt-5">Recent articles</h1>
         <div className="flex flex-wrap gap-5 mt-5 justify-center">
-          {/* {recentactivitys &&
-            recentactivitys.map((activity) => <activityCard key={activity._id} activity={activity} />)} */}
+          {recentActivities &&
+            recentActivities.map((activity) => (
+              <ActivityCard key={activity._id} activity={activity} />
+            ))}
         </div>
       </div>
     </main>

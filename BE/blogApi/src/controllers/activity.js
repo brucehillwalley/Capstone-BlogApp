@@ -64,10 +64,18 @@ module.exports = {
     //   customFilters = {};
     // }
     // console.log(customFilters);
-    const data = await res.getModelList(Activity, customFilters);
+    const data = await res.getModelList(Activity, customFilters,{
+      path: 'userId',
+      select: ['username', 'profilePicture'] // Single array for better readability
+
+
+    }); 
     res.status(200).send({
       error: false,
-      details: await res.getModelListDetails(Activity, customFilters),
+      details: await res.getModelListDetails(Activity, customFilters,{
+        path: "userId", select: "username, profilePicture", 
+ 
+     }),
       data: data,
     });
   },
@@ -143,7 +151,10 @@ module.exports = {
     const data = await Activity.findOne({
       _id: req.params.id,
       ...customFilters,
-    });
+    }).populate({
+      path: 'userId',
+      select: ['username', 'profilePicture'] // Single array for better readability
+   })
 
     //? datayı çekebildiysem view tablosuna eklemeliyim
     console.log(req.ip);
