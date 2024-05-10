@@ -69,7 +69,7 @@ export default function DashMyuser() {
     setShowModal(false);
     try {
       const res = await axiosWithToken.delete(
-        `${import.meta.env.VITE_APP_BASE_URL}/users/${userIdToDelete}`
+        `/users/${userIdToDelete}`
       );
       console.log(res.status === 204);
       if (res.status === 204) {
