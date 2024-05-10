@@ -41,7 +41,7 @@ export default function DashboardComp() {
 
         const getActivities = async () => {
             try {
-                const res = await axiosPublic.get(`/activities?sort[updatedAt]=desc&limit=5`);
+                const res = await axiosWithToken.get(`/activities?sort[updatedAt]=desc&limit=5`);
             // console.log(res.data);
             if (!res.data.error) {
                 setPosts(res.data.data);
@@ -56,7 +56,7 @@ export default function DashboardComp() {
         const getComments = async () => {
             try {
                 const res = await axiosPublic.get(`/comments?sort[updatedAt]=desc&limit=5`);
-            console.log(res.data);
+            // console.log(res.data);
             if (!res.data.error) {
                 setComments(res.data.data);
                 setTotalComments(res.data.details.totalRecords);

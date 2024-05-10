@@ -53,7 +53,10 @@ export default function DashSidebar() {
     <Sidebar className="w-full md:56">
       <SidebarItems>
         <SidebarItemGroup className="flex flex-col gap-1">
-          {/* // User Panel */}
+          
+          {/* Admin dashboard */}
+          {currentUser.isAdmin && (
+            
           <Link to="/dashboard?tab=dash">
             <Sidebar.Item
               active={tab === "dash" || !tab}
@@ -63,6 +66,8 @@ export default function DashSidebar() {
               Dashboard
             </Sidebar.Item>
           </Link>
+          )}
+          {/* // User Panel */}
           <Link to="/dashboard?tab=profile">
             <SidebarItem
               active={tab === "profile"}

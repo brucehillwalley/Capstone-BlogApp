@@ -16,7 +16,7 @@ export default function DashMyActivity() {
 
   const getActivities = async () => {
     try {
-      const res = await axiosPublic.get(
+      const res = await axiosWithToken.get(
           `/activities`
       )
 

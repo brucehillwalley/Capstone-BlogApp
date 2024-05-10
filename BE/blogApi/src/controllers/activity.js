@@ -47,6 +47,7 @@ module.exports = {
       delete customFilters.isPublished;
 
       //? admin  silinenleri görebilir. (kendi veya başkası)
+  
       req.user?.isAdmin && delete customFilters.isDeleted;
 
       //? admin başkasına ait author verisi gönderebilir bu durumda boş olmaz ve admin o kullanıcıyı listelemiş olur.
