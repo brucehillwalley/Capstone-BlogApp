@@ -30,15 +30,39 @@ module.exports = {
     const data = await res.getModelList(User, customFilter);
     // console.log(req.user);
 
+    //? Extra info:
+    const users = await User.find();
+
+    const usersWithoutPassword = users.map((user) => {
+      const { password, ...rest } = user._doc;
+      return rest;
+    });
+
+    const totalUsers = await User.countDocuments();
+
+    const now = new Date();
+
+    const oneMonthAgo = new Date(
+      now.getFullYear(),
+      now.getMonth() - 1,
+      now.getDate()
+    );
+
+    const lastMonthUsers = await User.countDocuments({
+      createdAt: { $gte: oneMonthAgo },
+    });
+
+
+
      //? For activity raw data
     //  data.map((user) => {
     //   console.log(user.username, user._id);
     // })
-
     res.status(200).send({
       error: false,
       details: await res.getModelListDetails(User, customFilter),
       data,
+      lastMonthUsers,
     });
   },
 

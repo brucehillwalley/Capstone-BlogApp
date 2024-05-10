@@ -30,11 +30,31 @@ module.exports = {
       customFilters = {};
     }
 
-    const data = await res.getModelList(Comment, customFilters,'userId');
+    const data = await res.getModelList(Comment, customFilters,{
+      path: 'userId',
+      select: ["username", "profilePicture"],
+    });
+
+    //? son 30 günlük comment:
+    const now = new Date();
+
+    const oneMonthAgo = new Date(
+      now.getFullYear(),
+      now.getMonth() - 1,
+      now.getDate()
+    );
+
+    const lastMonthComments = await Comment.countDocuments({
+      createdAt: { $gte: oneMonthAgo },
+    });
+
+
+
     res.status(200).send({
       error: false,
       details: await res.getModelListDetails(Comment, customFilters, 'userId'),
-      data: data,
+      data,
+      lastMonthComments
     });
   },
   create: async (req, res) => {

@@ -64,19 +64,32 @@ module.exports = {
     //   customFilters = {};
     // }
     // console.log(customFilters);
-    const data = await res.getModelList(Activity, customFilters,{
-      path: 'userId',
-      select: ['username', 'profilePicture'] // Single array for better readability
+    const data = await res.getModelList(Activity, customFilters, {
+      path: "userId",
+      select: ["username", "profilePicture"], // Single array for better readability
+    });
 
+    //? son 30 günlük post:
+    const now = new Date();
 
-    }); 
+    const oneMonthAgo = new Date(
+      now.getFullYear(),
+      now.getMonth() - 1,
+      now.getDate()
+    );
+
+    const lastMonthActivities = await Activity.countDocuments({
+      createdAt: { $gte: oneMonthAgo },
+    });
+
     res.status(200).send({
       error: false,
-      details: await res.getModelListDetails(Activity, customFilters,{
-        path: "userId", select: "username, profilePicture", 
- 
-     }),
-      data: data,
+      details: await res.getModelListDetails(Activity, customFilters, {
+        path: "userId",
+        select: "username, profilePicture",
+      }),
+      data,
+      lastMonthActivities,
     });
   },
   create: async (req, res) => {
@@ -152,9 +165,9 @@ module.exports = {
       _id: req.params.id,
       ...customFilters,
     }).populate({
-      path: 'userId',
-      select: ['username', 'profilePicture'] // Single array for better readability
-   })
+      path: "userId",
+      select: ["username", "profilePicture"], // Single array for better readability
+    });
 
     //? datayı çekebildiysem view tablosuna eklemeliyim
     console.log(req.ip);
