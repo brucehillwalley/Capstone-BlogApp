@@ -30,7 +30,7 @@ export default function Search() {
         ...sidebarData,
         searchTerm: searchTermFromUrl,
         sort: sortFromUrl,
-        category: categoryFromUrl,
+        category: categoryFromUrl || "uncategorized",
       });
     }
 
@@ -67,10 +67,14 @@ export default function Search() {
     const urlParams = new URLSearchParams(location.search);
     urlParams.set("search[content]", sidebarData.searchTerm);
     urlParams.set("sort[createdAt]", sidebarData.sort);
-    
-
-    sidebarData.category !== "uncategorized" && urlParams.set('filter[categoryName]', sidebarData.category);
-    const searchQuery = urlParams.toString();
+let searchQuery;
+if(sidebarData.category !== "uncategorized"){
+  urlParams.set('filter[categoryName]', sidebarData.category);
+  searchQuery = urlParams.toString();
+}else{
+  urlParams.delete('filter[categoryName]');
+  searchQuery = urlParams.toString();
+}
     console.log(searchQuery);
     navigate(`/search?${searchQuery}`);
   };
