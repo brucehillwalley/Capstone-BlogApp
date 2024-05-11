@@ -17,6 +17,17 @@ export default function Search() {
   const [page, setPage] = useState(2);
   const navigate = useNavigate();
   const { axiosPublic } = useAxios();
+  const [categories, setCategories] = useState([]);
+
+  useEffect(() => {
+    const getCategories = async () => {
+      const { data } = await axiosPublic.get("/categories?limit=1000&pg=null");
+      console.log(data.data);
+      setCategories(data.data);
+    }
+
+    getCategories()
+  },[])
 
   useEffect(() => {
     const urlParams = new URLSearchParams(location.search);
@@ -134,9 +145,11 @@ if(sidebarData.category !== "uncategorized"){
               id='category'
             >
               <option value='uncategorized'>Uncategorized</option>
-              <option value='reactjs'>React.js</option>
-              <option value='nextjs'>Next.js</option>
-              <option value='javascript'>JavaScript</option>
+              {categories.map((category) => (
+                <option key={category._id} value={category.name}>
+                  {category.name}
+                </option>
+              ))}
             </Select>
           </div>
           <Button type="submit" outline gradientDuoTone="purpleToPink">

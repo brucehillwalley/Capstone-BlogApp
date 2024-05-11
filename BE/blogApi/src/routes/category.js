@@ -10,11 +10,11 @@ const category = require('../controllers/category')
 const { isLogin, isAdmin } = require('../middlewares/permissions')
 
 // URL: /categories
-router.use(isLogin)
+// router.use(isLogin)
 
 router.route('/')
     .get(category.list)
-    .post(category.create)
+    .post(isLogin,category.create)
     
 router.route('/:id')
     .get(category.read)
