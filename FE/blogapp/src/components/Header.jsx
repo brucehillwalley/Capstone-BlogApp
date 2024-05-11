@@ -7,17 +7,27 @@ import {toggleTheme} from "../redux/theme/themeSlice"
 import {logoutSuccess} from "../redux/user/userSlice"
 import { useNavigate } from "react-router-dom"; 
 import  useAxios  from "../service/useAxios";
+import { useEffect, useState } from "react";
 
 
 export default function Header() {
   const path = useLocation().pathname;
+  const location = useLocation();
   const dispatch = useDispatch();
   const {currentUser}  = useSelector((state) => state.user);
   const {theme} = useSelector((state) => state.theme);
   const {axiosWithToken} = useAxios();
   const navigate = useNavigate();
+  const [searchTerm, setSearchTerm] = useState("");
 
-  
+  useEffect(() => {
+    const urlParams = new URLSearchParams(location.search);
+    const searchTermFromUrl = urlParams.get('searchTerm');
+    if (searchTermFromUrl) {
+      setSearchTerm(searchTermFromUrl);
+    }
+  }, [location.search]);
+
   const handleLogout = async () => {
     try {
       const res = await axiosWithToken.get("/auth/logout");
@@ -31,6 +41,19 @@ export default function Header() {
       console.log(error);
     }
   };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    if (!searchTerm) {
+      return;
+    }
+    const urlParams = new URLSearchParams(location.search);
+    urlParams.set("search[content]", searchTerm);
+    const searchQuery = urlParams.toString();
+    navigate(`/search?${searchQuery}`);
+  }
+
+
   // console.log(currentUser);
   return (
     <Navbar className="border-b-2">
@@ -43,12 +66,14 @@ export default function Header() {
         </span>
         Blog
       </Link>
-      <form>
+      <form onSubmit={handleSubmit}>
         <TextInput
           type="text"
           placeholder="Search..."
           rightIcon={AiOutlineSearch}
           className="hidden lg:inline"
+          value={searchTerm}
+          onChange={(e) => setSearchTerm(e.target.value)}
         />
       </form>
       <Button className="w-12 h-10 lg:hidden" color="gray" pill>

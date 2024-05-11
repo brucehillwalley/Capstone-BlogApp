@@ -10,13 +10,11 @@ export default function Search() {
     sort: "desc",
     category: "uncategorized",
   });
-
   const [posts, setPosts] = useState([]);
   const [loading, setLoading] = useState(false);
   const [showMore, setShowMore] = useState(false);
-
   const location = useLocation();
-
+  const [page, setPage] = useState(2);
   const navigate = useNavigate();
   const { axiosPublic } = useAxios();
 
@@ -29,7 +27,7 @@ export default function Search() {
       setSidebarData({
         ...sidebarData,
         searchTerm: searchTermFromUrl,
-        sort: sortFromUrl,
+        sort: sortFromUrl || "desc",
         category: categoryFromUrl || "uncategorized",
       });
     }
@@ -38,7 +36,7 @@ export default function Search() {
       setLoading(true);
       const searchQuery = urlParams.toString();
       const res = await axiosPublic(`/activities?${searchQuery}`);
-      console.log(res.data);
+      // console.log(res.data);
       if (res.data.error) {
         setLoading(false);
         return;
@@ -74,31 +72,36 @@ if(sidebarData.category !== "uncategorized"){
 }else{
   urlParams.delete('filter[categoryName]');
   searchQuery = urlParams.toString();
+  sidebarData.category="uncategorized";
 }
     console.log(searchQuery);
     navigate(`/search?${searchQuery}`);
   };
 
-  const handleShowMore = async () => {
-    const numberOfPosts = posts.length;
-    const startIndex = numberOfPosts;
+  const handleShowMore = async() => {
+    //? bulunduğum search query deki parametreleri al:
     const urlParams = new URLSearchParams(location.search);
-    urlParams.set("startIndex", startIndex);
+    console.log(urlParams.toString());
+    //? showmore için bir sonraki sayfayı getir:
+    urlParams.set('page', page);
     const searchQuery = urlParams.toString();
-    const res = await axiosPublic(`/activities?${searchQuery}`);
-    if (!res.data.error) {
+    console.log(searchQuery);
+    const res = await axiosPublic.get(`/activities?${searchQuery}`);
+    console.log(res);
+    if(res.data.error){
       return;
     }
-    if (res.data.error) {
-      const data = res.data;
-      setPosts([...posts, ...data.data]);
-      if (data.posts.length === 9) {
-        setShowMore(true);
-      } else {
-        setShowMore(false);
-      }
+
+   if (!res.data.error) {
+    const data = res.data;
+    setPosts((prev) => [...prev, ...data.data]);
+    setPage((prev) => prev + 1);
+    if (data.data.length < 9) {
+      setShowMore(false);
     }
-  };
+   }
+
+  }
 
   return (
     <div className="flex flex-col md:flex-row">
