@@ -13,6 +13,7 @@ import OnlyAdminPrivateRoute from "./components/OnlyAdminPrivateRoute";
 import UpdateActivity from "./pages/UpdateActivity";
 import ActivityPage from "./pages/ActivityPage";
 import ScrollToTop from "./components/ScrollToTop";
+import Search from "./pages/Search";
 
 export default function App() {
   return (
@@ -24,6 +25,7 @@ export default function App() {
         <Route path="/about" element={<About />} />
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
+        <Route path="/search" element={<Search />} />
         <Route element={<PrivateRoute />}>
           <Route path="/dashboard" element={<Dashboard />} />
            {/* Login olan her kullanıcı post yapabilsin */}
