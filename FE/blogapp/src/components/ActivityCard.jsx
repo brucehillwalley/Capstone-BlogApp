@@ -31,10 +31,13 @@ export default function ActivityCard({ activity }) {
         // console.log(res.data == "");
 
         if (res.data == "") {
-          setActivityState(
-           { ...activityState,
-            likes : activityState.likes.filter((like) => like !== currentUser._id),
-            likeCount:activityState.likeCount - 1});
+          setActivityState({
+            ...activityState,
+            likes: activityState.likes.filter(
+              (like) => like !== currentUser._id
+            ),
+            likeCount: activityState.likeCount - 1,
+          });
         }
       } else {
         const res = await axiosWithToken.post(`/likes/`, {
@@ -44,74 +47,23 @@ export default function ActivityCard({ activity }) {
         });
 
         if (!res.data.error) {
-          setActivityState(
-           { ...activityState,
-            likes : [...activityState.likes, currentUser._id],
-            likeCount:activityState.likeCount + 1});
+          setActivityState({
+            ...activityState,
+            likes: [...activityState.likes, currentUser._id],
+            likeCount: activityState.likeCount + 1,
+          });
         }
       }
     } catch (error) {
       console.log(error.message);
     }
   };
-  const handleView = async (activityId) => {
-    try {
-      if (!currentUser) {
-        navigate("/login");
-        return;
-      }
-
-      //? kullanıcı daha önce like edip edemedigini kontrol ediyor
-      const existingLike = await axiosWithToken.get(
-        `/likes?filter[userId]=${currentUser._id}&filter[itemId]=${activityId}`
-      );
-      // console.log(existingLike.data.data.length);
-
-      if (existingLike.data.data.length > 0) {
-        const res = await axiosWithToken.delete(
-          `/likes/${existingLike.data.data[0]._id}`
-        );
-        // console.log(res.data == "");
-
-        if (res.data == "") {
-          setComments(
-            comments.map((comment) =>
-              comment._id === commentId
-                ? {
-                    ...comment,
-                    likes: comment.likes.filter(
-                      (like) => like !== currentUser._id
-                    ),
-                    likeCount: comment.likeCount - 1,
-                  }
-                : comment
-            )
-          );
-        }
-      } else {
-        const res = await axiosWithToken.post(`/likes/`, {
-          userId: currentUser._id,
-          itemId: commentId,
-          itemType: "comment",
-        });
-
-        if (!res.data.error) {
-          setComments(
-            comments.map((comment) =>
-              comment._id === commentId
-                ? {
-                    ...comment,
-                    likes: [...comment.likes, currentUser._id],
-                    likeCount: comment.likeCount + 1,
-                  }
-                : comment
-            )
-          );
-        }
-      }
-    } catch (error) {
-      console.log(error.message);
-    }
+  const handleView = (activityId) => {
+    setActivityState({
+      ...activityState,
+      views: activityState.views.push(currentUser._id),
+    });
+    navigate(`/activity/${activityId}`);
   };
   return (
     <div className="group relative w-full border border-teal-500 hover:border-2 h-[400px] overflow-hidden rounded-lg sm:w-[430px] transition-all">
@@ -156,7 +108,7 @@ export default function ActivityCard({ activity }) {
               onClick={() => handleView(activity._id)}
               //? conditional rendering for like // style koşulla sağlanmalı
               className={`${
-                currentUser && activity.views?.includes(currentUser._id)
+                currentUser && activityState.views?.includes(currentUser._id)
                   ? "!text-blue-500"
                   : "text-gray-400"
               }`}
@@ -164,10 +116,10 @@ export default function ActivityCard({ activity }) {
               <FaRegEye className="text-md" />
             </button>
             <p className="text-gray-400">
-              {activity.viewCount > 0 &&
-                activity.viewCount +
+              {activityState.viewCount > 0 &&
+                activityState.viewCount +
                   " " +
-                  (activity.viewCount === 1 ? "view" : "views")}
+                  (activityState.viewCount === 1 ? "view" : "views")}
             </p>
           </div>
         </div>

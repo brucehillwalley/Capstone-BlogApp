@@ -47,7 +47,7 @@ module.exports = {
       delete customFilters.isPublished;
 
       //? admin  silinenleri görebilir. (kendi veya başkası)
-  
+
       req.user?.isAdmin && delete customFilters.isDeleted;
 
       //? admin başkasına ait author verisi gönderebilir bu durumda boş olmaz ve admin o kullanıcıyı listelemiş olur.
@@ -180,6 +180,9 @@ module.exports = {
     });
     // console.log(view);
     data.viewCount = data.viewCount + 1;
+    data.views = [...data.views, req.user._id];
+    // console.log(req.user._id);
+    // console.log(data.views);
     await data.save();
 
     //? data view eklenmiş bir şekilde response'a aktarılır
