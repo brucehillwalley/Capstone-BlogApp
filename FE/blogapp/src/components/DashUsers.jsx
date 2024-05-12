@@ -17,9 +17,7 @@ export default function DashMyuser() {
 
   const getUsers = async () => {
     try {
-      const res = await axiosWithToken.get(
-        `${import.meta.env.VITE_APP_BASE_URL}/users`
-      );
+      const res = await axiosWithToken.get(`/users`);
 
       // console.log(res.data.data);
       if (!res.data.error) {
