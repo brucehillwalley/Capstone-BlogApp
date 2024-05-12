@@ -36,7 +36,7 @@ const User = require("../models/user");
 const Activity = require("../models/activity");
 const activityData = require("./data/activityData");
 const Category = require("../models/category");
-const categoriesData = require("./data/categoryData");
+const categoriesData = require("./data/categoryDataEng");
 const Like = require("../models/like");
 const commentData = require("./data/commentData");
 const Comment = require("../models/comment");
@@ -210,12 +210,12 @@ async function cleanCollections() {
 
 module.exports = async () => {
   //! Emniyet
-  return null
+  // return null
 
-  await cleanCollections();
+  // await cleanCollections();
   try {
-    await transferUsersCollection();
-    await insertCategories();
+    // await transferUsersCollection();
+    // await insertCategories();
     await insertActivities();
     await insertComments();
     await insertLikes();

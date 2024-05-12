@@ -2,24 +2,7 @@
 
 
 module.exports = [
-  {
-    title: "Open Water Swimming Adventure in the Florida Keys",
-    content:
-      "Experience the thrill of swimming in the crystal-clear waters of the Florida Keys. Our guided tour will take you to the best spots for open water swimming, where you can enjoy the beauty of the coral reefs and diverse marine life...",
-    image: ["https://example.com/open-water-swimming.jpg"],
-    isPublished: true,
-    hasPrice: true,
-    location: "Key West, Florida, USA",
-    isOutDoor: true,
-    likeCount: 25,
-    deletedAt: null,
-    deletedId: null,
-    isDeleted: false,
-    deletedReason: null,
-    createdAt: new Date("2023-04-25T10:30:00Z"),
-    updatedAt: new Date("2023-04-25T10:30:00Z"),
-    categoryName: "yüzme",
-  },
+  
   {
     title: "Contemporary Photography Exhibition in New York City",
     content:
@@ -36,7 +19,7 @@ module.exports = [
     deletedReason: null,
     createdAt: new Date("2023-04-22T14:00:00Z"),
     updatedAt: new Date("2023-04-22T14:00:00Z"),
-    categoryName: "fotoğraf sergisi",
+    categoryName: "hobbies & interests",
   },
   {
     title: "Annual Food Truck Festival in Austin",
@@ -54,7 +37,7 @@ module.exports = [
     deletedReason: null,
     createdAt: new Date("2023-04-18T08:00:00Z"),
     updatedAt: new Date("2023-04-18T08:00:00Z"),
-    categoryName: "yemek festivali",
+    categoryName: "social activities",
   },
   {
     title: "Camping Adventure in the Rocky Mountains",
@@ -72,7 +55,7 @@ module.exports = [
     deletedReason: null,
     createdAt: new Date("2023-04-15T12:30:00Z"),
     updatedAt: new Date("2023-04-15T12:30:00Z"),
-    categoryName: "kamp",
+    categoryName: "nature & adventure",
   },
   {
     title: "Open Water Swimming and Snorkeling Adventure in Bali",
@@ -90,7 +73,7 @@ module.exports = [
     deletedReason: null,
     createdAt: new Date("2023-04-12T09:00:00Z"),
     updatedAt: new Date("2023-04-12T09:00:00Z"),
-    categoryName: "yüzme",
+    categoryName: "sports",
   },
 
   {
@@ -110,7 +93,7 @@ module.exports = [
     deletedReason: null,
     createdAt: new Date("2023-04-20T16:00:00Z"),
     updatedAt: new Date("2023-04-20T16:00:00Z"),
-    categoryName: "fotoğraf sergisi",
+    categoryName: "hobbies & interests",
   },
   {
     title: "Annual Seafood Festival in Portland, Maine",
@@ -128,7 +111,7 @@ module.exports = [
     deletedReason: null,
     createdAt: new Date("2023-04-17T10:30:00Z"),
     updatedAt: new Date("2023-04-17T10:30:00Z"),
-    categoryName: "yemek festivali",
+    categoryName: "food & cooking",
   },
   {
     title: "Backpacking Adventure in the Sierra Nevada Mountains",
@@ -146,7 +129,7 @@ module.exports = [
     deletedReason: null,
     createdAt: new Date("2023-04-14T08:00:00Z"),
     updatedAt: new Date("2023-04-14T08:00:00Z"),
-    categoryName: "kamp",
+    categoryName: "adventure",
   },
 
   {
@@ -165,7 +148,7 @@ module.exports = [
     deletedReason: null,
     createdAt: new Date("2023-04-28T10:30:00Z"),
     updatedAt: new Date("2023-04-28T10:30:00Z"),
-    categoryName: "Spor",
+    categoryName: "nature & adventure",
   },
   {
     title: "Modern Art Exhibition in Paris",
@@ -183,7 +166,7 @@ module.exports = [
     deletedReason: null,
     createdAt: new Date("2023-04-25T14:00:00Z"),
     updatedAt: new Date("2023-04-25T14:00:00Z"),
-    categoryName: "Sanat",
+    categoryName: "art & literature",
   },
   {
     title: "Legendary Rock Band's 50th Anniversary Concert",
@@ -201,7 +184,7 @@ module.exports = [
     deletedReason: null,
     createdAt: new Date("2023-04-22T20:00:00Z"),
     updatedAt: new Date("2023-04-22T20:00:00Z"),
-    categoryName: "Konser",
+    categoryName: "entertainment",
   },
   {
     title: "Renowned Author's Book Signing and Reading",
@@ -219,7 +202,7 @@ module.exports = [
     deletedReason: null,
     createdAt: new Date("2023-04-20T18:00:00Z"),
     updatedAt: new Date("2023-04-20T18:00:00Z"),
-    categoryName: "Edebiyat",
+    categoryName: "art & literature",
   },
   {
     title: "Guided Deer Hunting Experience in Montana",
@@ -237,6 +220,191 @@ module.exports = [
     deletedReason: null,
     createdAt: new Date("2023-04-18T12:00:00Z"),
     updatedAt: new Date("2023-04-18T12:00:00Z"),
-    categoryName: "Avcılık",
+    categoryName: "nature & adventure",
   },
+  {
+    "title": "Family Bake-Off Challenge",
+    "content": "Unleash your family's inner chefs and creativity in a fun and delicious bake-off challenge! Pick a theme (e.g., cookies, cupcakes, pies) and gather your ingredients. Get ready for some friendly competition, laughter, and of course, tasty treats!",
+    "image": ["https://images.unsplash.com/photo-1570692677729-f30b13e0c7fa"],
+    "isPublished": true,
+    "hasPrice": false,  // Free activity
+    "location": "Your home",
+    "isOutDoor": false,
+    "likeCount": 12,
+    "deletedAt": null,
+    "deletedId": null,
+    "isDeleted": false,
+    "deletedReason": null,
+    "createdAt": new Date("2024-05-13T00:00:00Z"),
+    "updatedAt": new Date("2024-05-13T00:00:00Z"),
+    "categoryName": "Family",
+    // "ageRange": {
+    //   "minAge": 5,  // Suitable for ages 5 and above
+    //   "maxAge": 12   // Can be adjusted based on recipe complexity
+    // },
+    // "duration": {
+    //   "hours": 1,  // Approximate duration
+    //   "minutes": 30
+    // },
+    // "materials": [
+    //   "Mixing bowls",
+    //   "Whisk",
+    //   "Spoons",
+    //   "Measuring cups",
+    //   "Baking sheets",
+    //   "Oven",
+    //   "Decorating supplies (optional)"
+    // ],
+    // "difficultyLevel": "Easy"
+  },
+  {
+    "title": "Yoga in the Park",
+    "content": "Unwind, de-stress, and reconnect with your body and breath in a beautiful outdoor setting. Join a guided yoga session in the park, suitable for all levels. Let the fresh air and calming atmosphere rejuvenate your mind and body.",
+    "image": ["https://images.unsplash.com/photo-1504753793650-d43f71c847db"],
+    "isPublished": true,
+    "hasPrice": true,  // Can be free or paid depending on the session
+    "location": "Central Park, New York (Replace with specific park location)",
+    "isOutDoor": true,
+    "likeCount": 42,
+    "deletedAt": null,
+    "deletedId": null,
+    "isDeleted": false,
+    "deletedReason": null,
+    "createdAt": new Date("2024-05-13T00:00:00Z"),
+    "updatedAt": new Date("2024-05-13T00:00:00Z"),
+    "categoryName": "Mind & Body",
+    // "duration": {
+    //   "hours": 1,
+    //   "minutes": 15
+    // },
+    // "skillLevel": "All Levels"
+  },
+  {
+    "title": "Doggie Scavenger Hunt at the Park",
+    "content": "Engage your furry friend's mind and senses with a fun-filled scavenger hunt at the park! Hide treats and toys around a designated area and watch your dog sniff them out with excitement. This activity is perfect for strengthening your bond with your pup and providing mental stimulation.",
+    "image": ["https://images.unsplash.com/photo-1576071280447-d0a4a94023c4"],
+    "isPublished": true,
+    "hasPrice": false,  // Free activity
+    "location": "Your local park",
+    "isOutDoor": true,
+    "likeCount": 38,
+    "deletedAt": null,
+    "deletedId": null,
+    "isDeleted": false,
+    "deletedReason": null,
+    "createdAt": new Date("2024-05-13T00:00:00Z"),
+    "updatedAt": new Date("2024-05-13T00:00:00Z"),
+    "categoryName": "Pets",
+    // "petType": "Dog",  // Specify the pet type
+    // "difficultyLevel": "Easy",
+    // "supplies": [
+    //   "Dog treats or favorite toys",
+    //   "Leash (optional, depending on park rules)"
+    // ]
+  },
+  {
+    "title": "Beach Cleanup at Sunset",
+    "content": "Join us for a rewarding evening of cleaning up our local beach and making a positive impact on the environment! Witness the beauty of a sunset while giving back to the community. This activity is perfect for individuals, families, and groups who want to make a difference.",
+    "image": ["https://images.unsplash.com/photo-1508534423903-b112172bdaf9"],
+    "isPublished": true,
+    "hasPrice": false,  // Free activity
+    "location": "Santa Monica Beach, California (Replace with specific location)",
+    "isOutDoor": true,
+    "likeCount": 17,
+    "deletedAt": null,
+    "deletedId": null,
+    "isDeleted": false,
+    "deletedReason": null,
+    "createdAt": new Date("2024-05-13T00:00:00Z"),
+    "updatedAt": new Date("2024-05-13T00:00:00Z"),
+    "categoryName": "Volunteering & Giving Back",
+    // "cause": "Environmental",
+    // "ageRange": {
+    //   "minAge": 10,  // Suitable for ages 10 and above
+    //   "maxAge": 100
+    // },
+    // "duration": {
+    //   "hours": 2,
+    //   "minutes": 0
+    // },
+    // "whatToBring": [
+    //   "Reusable water bottle",
+    //   "Sun hat and sunscreen (optional)",
+    //   "Glove" // Consider adding based on cleanup needs
+    // ],
+    // "registrationLink": "https://www.example.com/beachcleanup"  // Replace with actual link
+  },
+  {
+    "title": "Explore Little Italy: Food Tour & Historical Walking Tour",
+    "content": "Immerse yourself in the rich Italian heritage of Little Italy! Embark on a guided tour that combines delicious food tastings with fascinating historical insights. Savor authentic Italian cuisine from local family-owned restaurants and bakeries while learning about the neighborhood's vibrant history, traditions, and cultural significance.",
+    "image": ["https://images.unsplash.com/photo-1504583493534-7409cf2c744f"],
+    "isPublished": true,
+    "hasPrice": true,  // Ticketed event
+    "location": "Little Italy, New York City (Replace with specific location)",
+    "isOutDoor": true,  // Walking tour component
+    "likeCount": 54,
+    "deletedAt": null,
+    "deletedId": null,
+    "isDeleted": false,
+    "deletedReason": null,
+    "createdAt": new Date("2024-05-13T00:00:00Z"),
+    "updatedAt": new Date("2024-05-13T00:00:00Z"),
+    "categoryName": "Cultural Exploration",
+    // "duration": {
+    //   "hours": 3,
+    //   "minutes": 0
+    // },
+    // "ageRange": {
+    //   "minAge": 10,  // Suitable for ages 10 and above
+    //   "maxAge": 100
+    // },
+    // "accessibility": "Moderate walking required",
+    // "highlights": [
+    //   "Sample authentic Italian food from various restaurants and bakeries.",
+    //   "Learn about the history of Italian immigration and establishment of Little Italy.",
+    //   "Discover hidden gems and landmarks in the neighborhood.",
+    //   "Enjoy a fun and informative experience for all ages."
+    // ],
+    // "bookingLink": "https://www.example.com/littleitalytour" // Replace with actual link
+  },
+  {
+    "title": "Introduction to Data Analysis with Python",
+    "content": "Take the first step towards a data-driven career path! This workshop will introduce you to the fundamentals of data analysis using Python. Learn basic programming concepts, data manipulation techniques, and explore powerful libraries like pandas and matplotlib.  Whether you're a complete beginner or have some programming experience, this interactive workshop will equip you with the essential skills to get started with data analysis.",
+    "image": ["https://images.unsplash.com/photo-1599374442528-10e7a6bdaddb"],
+    "isPublished": true,
+    "hasPrice": true,  // Ticketed event or paid course
+    "location": "Online (or specific physical location if applicable)",
+    "isOutDoor": false,  // Unless the workshop involves an outdoor activity
+    "likeCount": 21,
+    "deletedAt": null,
+    "deletedId": null,
+    "isDeleted": false,
+    "deletedReason": null,
+    "createdAt": new Date("2024-05-13T00:00:00Z"),
+    "updatedAt": new Date("2024-05-13T00:00:00Z"),
+    "categoryName": "Learning & Development",
+    // "targetAudience": "Beginners with or without prior programming experience",
+    // "learningOutcomes": [
+    //   "Understand the basics of Python programming.",
+    //   "Learn how to manipulate and clean data using pandas.",
+    //   "Gain an introduction to data visualization with matplotlib.",
+    //   "Develop the skills to analyze and interpret data effectively."
+    // ],
+    // "instructor": "John Smith (Data Scientist)", // Replace with actual instructor info
+    // "duration": {
+    //   "hours": 3,
+    //   "minutes": 0
+    // },
+    // "registrationLink": "https://www.example.com/datapythonworkshop" ,// Replace with actual link
+    // "materials": [
+    //   "Laptop with internet access",
+    //   "A free Python development environment (e.g., PyCharm, Visual Studio Code)"
+    // ]
+  }
+  
+  
+  
+  
+  
+
 ];
