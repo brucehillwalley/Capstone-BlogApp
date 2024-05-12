@@ -19,7 +19,7 @@ export default function ActivityPage() {
       try {
         setLoading(true);
         const res = await axiosWithToken.get(`/activities/${actId}`);
-        console.log(res);
+        console.log(res.data.data);
         if (!res.data.error) {
           setActivity(res.data.data);
           setLoading(false);
