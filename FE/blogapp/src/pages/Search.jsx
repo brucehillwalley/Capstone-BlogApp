@@ -22,7 +22,7 @@ export default function Search() {
   useEffect(() => {
     const getCategories = async () => {
       const { data } = await axiosPublic.get("/categories?limit=1000&pg=null");
-      console.log(data.data);
+      // console.log(data.data);
       setCategories(data.data);
     }
 

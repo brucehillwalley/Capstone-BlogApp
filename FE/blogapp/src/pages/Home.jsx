@@ -11,7 +11,7 @@ export default function Home() {
   useEffect(() => {
     const fetchPosts = async () => {
       const res = await axiosPublic('/activities?sort[createdAt]=desc');
-      console.log(res.data.data);
+      // console.log(res.data.data);
       setActivities(res.data.data);
     };
     fetchPosts();
