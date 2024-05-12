@@ -154,15 +154,13 @@ async function insertComments() {
   const commentUsers = await User.find();
   const commentActivities = await Activity.find();
   console.log(`- ALL COMMENTS...............`);
- await ( commentUsers.forEach(async (user) => {
+  await commentUsers.forEach(async (user) => {
     let comment = MyLodash.sample(commentData);
     comment.userId = user._id;
     comment.activityId = MyLodash.sample(commentActivities)._id;
     await Comment.create(comment);
     console.log(`- Comment ${comment.comment} created.`);
-  }))
-
-  
+  });
 }
 //? LIKES............................................................
 async function insertLikes() {
@@ -178,6 +176,8 @@ async function insertLikes() {
         itemId: activity._id,
         itemType: "activity",
       });
+      await activity.updateOne({ $inc: { likeCount: 1 } });
+      await activity.updateOne({ $push: { likes: user._id } });
       console.log(
         `- Like created for USER: ${user.username} and ACTIVITY: ${activity.title}.`
       );
@@ -189,12 +189,13 @@ async function insertLikes() {
         itemId: comment._id,
         itemType: "comment",
       });
+      await comment.updateOne({ $inc: { likeCount: 1 } });
+      await comment.updateOne({ $push: { likes: user._id } });
       console.log(
         `- Like created for USER: ${user.username} and COMMENT: ${comment.comment}.`
       );
     });
   });
- 
 }
 //? DROP DATABASE....................................................
 async function cleanCollections() {
@@ -209,14 +210,14 @@ async function cleanCollections() {
 /*-------------------------------------------------------*/
 
 module.exports = async () => {
-  //! Emniyet
-  // return null
+  // ! Emniyet
+  return null;
 
   // await cleanCollections();
   try {
     // await transferUsersCollection();
     // await insertCategories();
-    await insertActivities();
+    // await insertActivities();
     await insertComments();
     await insertLikes();
   } catch (error) {

@@ -48,19 +48,29 @@ module.exports = {
     //  req.body.itemId =  // TODO: itemId alanını doldur
 
     //? zaten kullanıcı beğendiyse 409 hatası verilir
-    const existingLike = await Like.findOne({userId: req.body.userId, itemId: req.body.itemId});
+    const existingLike = await Like.findOne({
+      userId: req.body.userId,
+      itemId: req.body.itemId,
+    });
     if (existingLike) {
-      return res.status(409).send({ 
-        error: true, 
-        message: "Already liked" });
+      return res.status(409).send({
+        error: true,
+        message: "Already liked",
+      });
     }
 
     const data = await Like.create(req.body);
     //? activity veya comment için likeCount'u arttırın
-    if(req.body.itemType === "activity") {
-      await Activity.updateOne({ _id: req.body.itemId }, { $inc: { likeCount: 1 }, $push: { likes: req.user._id } });
-    }else if(req.body.itemType === "comment") {
-      await Comment.updateOne({ _id: req.body.itemId }, { $inc: { likeCount: 1 }, $push: { likes: req.user._id } });
+    if (req.body.itemType === "activity") {
+      await Activity.updateOne(
+        { _id: req.body.itemId },
+        { $inc: { likeCount: 1 }, $push: { likes: req.user._id } }
+      );
+    } else if (req.body.itemType === "comment") {
+      await Comment.updateOne(
+        { _id: req.body.itemId },
+        { $inc: { likeCount: 1 }, $push: { likes: req.user._id } }
+      );
     }
 
     res.status(201).send({
@@ -93,15 +103,15 @@ module.exports = {
         }
       }
     */
-    
-    //? Admin olmayan herkes sadece kendi like' nı güncelleyebilir.
-    if(!req.user.isAdmin) {
-     const userId= (await Like.findOne({ _id: req.params.id })).userId;
 
-     //? object id karşılaştırması
-     if (!userId.equals(req.user._id)) {
-       return res.status(403).send({ error: true, message: "Unauthorized" });
-     }
+    //? Admin olmayan herkes sadece kendi like' nı güncelleyebilir.
+    if (!req.user.isAdmin) {
+      const userId = (await Like.findOne({ _id: req.params.id })).userId;
+
+      //? object id karşılaştırması
+      if (!userId.equals(req.user._id)) {
+        return res.status(403).send({ error: true, message: "Unauthorized" });
+      }
     }
 
     const data = await Like.updateOne({ _id: req.params.id }, req.body);
@@ -119,22 +129,28 @@ module.exports = {
       #swagger.tags = ["Like"]
       #swagger.summary = "Delete Like"
     */
-    
+
     //? Admin olmayan herkes kendi like' nı silebilir
-    if(!req.user.isAdmin) {
-      const userId= (await Like.findOne({ _id: req.params.id })).userId;
+    if (!req.user.isAdmin) {
+      const userId = (await Like.findOne({ _id: req.params.id })).userId;
       if (!userId.equals(req.user._id)) {
         return res.status(403).send({ error: true, message: "Unauthorized" });
       }
-     }
-     const likeData = await Like.findOne({ _id: req.params.id });
-    const data = await Like.deleteOne({_id:req.params.id} );
-      //? activity veya comment için likeCount'u azalt:
-      if(likeData.itemType === "activity") {
-        await Activity.updateOne({ _id: likeData.itemId }, { $inc: { likeCount: -1 }, $pull: { likes: req.user._id } });
-      }else if(likeData.itemType === "comment") {
-        await Comment.updateOne({ _id: likeData.itemId }, { $inc: { likeCount: -1 }, $pull: { likes: req.user._id } });
-      }
+    }
+    const likeData = await Like.findOne({ _id: req.params.id });
+    const data = await Like.deleteOne({ _id: req.params.id });
+    //? activity veya comment için likeCount'u azalt:
+    if (likeData.itemType === "activity") {
+      await Activity.updateOne(
+        { _id: likeData.itemId },
+        { $inc: { likeCount: -1 }, $pull: { likes: req.user._id } }
+      );
+    } else if (likeData.itemType === "comment") {
+      await Comment.updateOne(
+        { _id: likeData.itemId },
+        { $inc: { likeCount: -1 }, $pull: { likes: req.user._id } }
+      );
+    }
     console.log(data);
     res.sendStatus(data.deletedCount >= 1 ? 204 : 404);
   },
