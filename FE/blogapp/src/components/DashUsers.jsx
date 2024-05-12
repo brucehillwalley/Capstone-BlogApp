@@ -21,7 +21,7 @@ export default function DashMyuser() {
         `${import.meta.env.VITE_APP_BASE_URL}/users`
       );
 
-      console.log(res.data.data);
+      // console.log(res.data.data);
       if (!res.data.error) {
         setUsersState(res.data.data);
         //   console.log(usersState.length);
