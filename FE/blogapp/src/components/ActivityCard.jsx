@@ -22,7 +22,7 @@ export default function ActivityCard({ activity }) {
       const existingLike = await axiosWithToken.get(
         `/likes?filter[userId]=${currentUser._id}&filter[itemId]=${activityId}`
       );
-      console.log(existingLike.data.data.length);
+      // console.log(existingLike.data.data.length);
 
       if (existingLike.data.data.length > 0) {
         const res = await axiosWithToken.delete(
