@@ -37,7 +37,8 @@ export default function ActivityPage() {
       }
     };
     getActivity();
-  }, []);
+    //! actId yi takip etmeli yoksa recent activities de oluşturulan bir tıklayarak geldiğimizde sayfa yenilenmiyor 
+  }, [actId]);
 
   useEffect(() => {
     try {
@@ -116,8 +117,8 @@ export default function ActivityPage() {
         <h1 className="text-xl mt-5">Recent articles</h1>
         <div className="flex flex-wrap gap-5 mt-5 justify-center">
           {recentActivities &&
-            recentActivities.map((activity) => (
-              <ActivityCard key={activity._id} activity={activity} />
+            recentActivities.map((recentActivity) => (
+              <ActivityCard key={recentActivity._id} activity={recentActivity} />
             ))}
         </div>
       </div>
