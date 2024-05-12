@@ -176,12 +176,12 @@ module.exports = {
     const view = await View.create({
       userId: req.user?._id,
       activityId: req.params.id,
-      // ipAddress: req.ip,
+      ipAddress: req.ip,
     });
     // console.log(view);
     data.viewCount = data.viewCount + 1;
-    data.views = [...data.views, req.user._id];
-    // console.log(req.user._id);
+    data.views = [...data.views, req.user?._id];
+    // console.log(req.user?._id);
     // console.log(data.views);
     await data.save();
 

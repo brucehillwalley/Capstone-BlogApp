@@ -2,7 +2,6 @@ import { Button, Spinner } from "flowbite-react";
 import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import CallToAction from "../components/CallToAction";
-// import CommentSection from '../components/CommentSection';
 import ActivityCard from "../components/ActivityCard";
 import useAxios from "../service/useAxios";
 import CommentSection from "../components/CommentSection";
@@ -20,7 +19,7 @@ export default function ActivityPage() {
       try {
         setLoading(true);
         const res = await axiosWithToken.get(`/activities/${actId}`);
-        // console.log(res.data.data);
+        console.log(res);
         if (!res.data.error) {
           setActivity(res.data.data);
           setLoading(false);
@@ -29,15 +28,16 @@ export default function ActivityPage() {
         if (res.data.error) {
           setError(true);
           setLoading(false);
-          return;
+          // return;
         }
       } catch (error) {
         setError(true);
         setLoading(false);
+        console.log(error.message);
       }
     };
     getActivity();
-  }, [actId]);
+  }, []);
 
   useEffect(() => {
     try {
