@@ -2,6 +2,12 @@
 [Frontend](https://activity-blog-app.vercel.app/)
 [Backend](https://activity-blogapp.onrender.com)
 
+# features
+    upload
+    kullanıcı kaydında mail atma, like veya yorum aldığında mail atma
+    swagger render' da dene bölümleri istek atmıyor
+    admin içimn kullanıcı update sayfası
+    var olan bir aktiviteden plan oluşturmak 
 
 ### GELİŞTİRİLEBİLECEK YÖNLERİ :
 ## indoor outdoor aktivite blog sitesi
