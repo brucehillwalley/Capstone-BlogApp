@@ -75,7 +75,7 @@ export default function Login() {
               <Label value="Your username" />
               <TextInput
                 type="text"
-                placeholder="Username"
+                placeholder="admin"
                 id="username"
                 onChange={handleChange}
               />
@@ -87,7 +87,7 @@ export default function Login() {
               <Label value="Your email" />
               <TextInput
                 type="email"
-                placeholder="name@company.com"
+                placeholder="admin@site.com"
                 id="email"
                 onChange={handleChange}
               />
@@ -96,7 +96,7 @@ export default function Login() {
               <Label value="Your password" />
               <TextInput
                 type="password"
-                placeholder="**********"
+                placeholder="Bruce123*"
                 id="password"
                 onChange={handleChange}
               />
